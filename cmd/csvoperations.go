@@ -7,7 +7,7 @@ import (
 )
 
 func ReadCSV() ([]string, error) {
-    var resourcesFile string = "./resources/RussianKanjiFrequencyList.csv"
+    var resourcesFile string = "./resources/KanjiFrequencyList.csv"
 
     // Open the file
     file, err := os.Open(resourcesFile)
