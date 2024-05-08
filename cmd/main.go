@@ -29,6 +29,7 @@ func main() {
         scanner.Scan()
         userInput := scanner.Text()
 
+        fmt.Println("============ ONYOMI ================")
         if val, ok := csv_as_onyomi_map[userInput]; ok {
             for _, currentRune := range(val) {
                 escaped:= url.QueryEscape(string(currentRune))
@@ -41,6 +42,7 @@ func main() {
             fmt.Println("DOES NOT EXIST")
         }
 
+        fmt.Println("============= KUNYOMI ===============")
         if val, ok := csv_as_kunyomi_map[userInput]; ok {
             for _, currentRune := range(val) {
                 escaped:= url.QueryEscape(string(currentRune))
