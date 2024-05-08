@@ -16,7 +16,8 @@ func main() {
     scanner := bufio.NewScanner(os.Stdin)
 
     // Read the CSV file and set to hashmap
-    csv_as_map, err := ReadCSV("./resources/KanjiFrequencyList.csv")
+    csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyList.csv")
+    csv_as_kunyomi_map, err := ReadCSV("./resources/KanjiFrequencyListKunyomi.csv")
 
     // Check if there is an error
     if err != nil {
@@ -28,7 +29,19 @@ func main() {
         scanner.Scan()
         userInput := scanner.Text()
 
-        if val, ok := csv_as_map[userInput]; ok {
+        if val, ok := csv_as_onyomi_map[userInput]; ok {
+            for _, currentRune := range(val) {
+                escaped:= url.QueryEscape(string(currentRune))
+                
+                fmt.Printf("\n%s: https://www.jisho.org/search/%s%%20%%23kanji", string(currentRune), escaped)
+            }    
+
+            fmt.Printf("\nNumber of occurences: %d\n", len(val))
+        } else {
+            fmt.Println("DOES NOT EXIST")
+        }
+
+        if val, ok := csv_as_kunyomi_map[userInput]; ok {
             for _, currentRune := range(val) {
                 escaped:= url.QueryEscape(string(currentRune))
                 
