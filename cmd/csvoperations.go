@@ -6,10 +6,9 @@ import (
     "os"
 )
 
-func ReadCSV() (map[string]string, error) {
-    var resourcesFile string = "./resources/KanjiFrequencyList.csv"
-
-    mymap := make(map[string]string)
+func ReadCSV(resourcesFile string) (map[string][]rune, error) {
+    // create a map
+    mymap := make(map[string][]rune)
 
     // Open the file
     file, err := os.Open(resourcesFile)
@@ -37,7 +36,7 @@ func ReadCSV() (map[string]string, error) {
 
     // Append each record to lines
     for _, line := range(records) {
-        mymap[line[0]] = line[1]
+        mymap[line[0]] = []rune(line[1])
     }
 
     return mymap , nil
