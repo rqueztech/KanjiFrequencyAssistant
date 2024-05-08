@@ -5,6 +5,7 @@ import (
     "fmt" // import the fmt package for printing
     "bufio" // import bufio to scan in user input
     "os"
+    "net/url"
 )
 
 // Main function
@@ -14,25 +15,27 @@ func main() {
 
     scanner := bufio.NewScanner(os.Stdin)
 
-
-    // Read the CSV file and set to string
-    csv_as_map, err := ReadCSV()
+    // Read the CSV file and set to hashmap
+    csv_as_map, err := ReadCSV("./resources/KanjiFrequencyList.csv")
 
     // Check if there is an error
     if err != nil {
         fmt.Println(err)
     }
-    
+
     for {
-        scanner.Scan()
         fmt.Print("Enter Input: ")
+        scanner.Scan()
         userInput := scanner.Text()
-        
 
         if val, ok := csv_as_map[userInput]; ok {
-            value := len(val) / 3
-            fmt.Println(val)
-            fmt.Printf("Number of occurences: %d\n", value)
+            for _, currentRune := range(val) {
+                escaped:= url.QueryEscape(string(currentRune))
+                
+                fmt.Printf("\n%s: https://www.jisho.org/search/%s%%20%%23kanji", string(currentRune), escaped)
+            }    
+
+            fmt.Printf("\nNumber of occurences: %d\n", len(val))
         } else {
             fmt.Println("DOES NOT EXIST")
         }
