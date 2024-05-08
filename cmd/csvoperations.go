@@ -6,8 +6,10 @@ import (
     "os"
 )
 
-func ReadCSV() ([]string, error) {
+func ReadCSV() (map[string]string, error) {
     var resourcesFile string = "./resources/KanjiFrequencyList.csv"
+
+    mymap := make(map[string]string)
 
     // Open the file
     file, err := os.Open(resourcesFile)
@@ -21,12 +23,10 @@ func ReadCSV() ([]string, error) {
     // Close the file at the end of the function
     defer file.Close()
 
-    var lines []string
-
-    // Create a reader
+    // Create a reader -> the reader is a reader interface, io 
     reader := csv.NewReader(file)
 
-    // Read all records from the CSV
+    // Read in all of the records -> returns as [][]string
     records, err := reader.ReadAll()
 
     // Error handling
@@ -36,10 +36,10 @@ func ReadCSV() ([]string, error) {
     }
 
     // Append each record to lines
-    for _, record := range records {
-        lines = append(lines, record...)
+    for _, line := range(records) {
+        mymap[line[0]] = line[1]
     }
 
-    return lines, nil
+    return mymap , nil
 }
 
