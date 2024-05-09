@@ -7,7 +7,7 @@ Currently, the program uses multiple CSV files (cleaned, analyzed, and formatted
 # WORKS CITED
 * **Wikipedia Table:**
  https://en.wikipedia.org/wiki/List_of_j%C5%8Dy%C5%8D_kanji
-* **Kanji Table: https://www.bunka.go.jp/kokugo_nihongo/sisaku/joho/joho/kijun/naikaku/pdf/joyokanjihyo_20101130.pd**
+* **Kanji Table: https://www.bunka.go.jp/kokugo_nihongo/sisaku/joho/joho/kijun/naikaku/pdf/joyokanjihyo_20101130.pdf**
 https://www.jisho.org - external links to kanji readings with very detailed information
 
 # README.md UNDER CONSTRUCTION
