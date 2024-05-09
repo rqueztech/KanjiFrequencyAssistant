@@ -1,3 +1,4 @@
+# !!!!!!!!!!!!WARNING!!!!!!!!!!!! -> Many mistakes found (incorrect data, false positives). Data must be cleaned and fixed.
 # ABOUT
 Learning Japense Kanji is hard enough, but what is so difficult is figuring out the readings. The purpose of this program is to allow you to enter a reading (romanized or in hiragana), to retrieve all permuations along with links to jisho.org.
 # CURRENT FEATURES
