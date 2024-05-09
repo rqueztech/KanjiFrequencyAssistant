@@ -15,3 +15,4 @@ https://www.jisho.org - external links to kanji readings with very detailed info
 # FEATURES TO ADD
 * Make the program accessible through command line interface globally, where calling the name followed by desired reading will immediately print out results.
 * Rewrite assistant tools being used in bash and golang.
+* Concurrency in reading all 3 csv files in at the same time if possible
