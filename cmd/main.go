@@ -37,7 +37,7 @@ func main() {
     scanner := bufio.NewScanner(os.Stdin)
     
     // Read the CSV file and set to hashmaps (Onyomi, Kunyomi, and Kunyomi with hiragana(verbs, adverbs, adjectives etc...))
-    csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyList.csv")
+    csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyListOnyomi.csv")
     csv_as_kunyomi_map, err := ReadCSV("./resources/KanjiFrequencyListKunyomi.csv")
     csv_as_kunyomi_hiragana_map, err := ReadCSV("./resources/KunyomiWithHiragana.csv")
 
