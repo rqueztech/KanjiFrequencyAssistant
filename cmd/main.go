@@ -51,9 +51,6 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
-    // Prompt the user for input
-    fmt.Println("Spell out onyomi reading (hiragana, katakana, kanji): ")
-
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
     
@@ -70,12 +67,14 @@ func main() {
     csv_as_definitions, err := ReadCSV("./resources/KanjiMeanings.csv")
     handleError(err, "csv_as_definitions")
     
-    fmt.Println(csv_as_definitions)
-    scanner.Scan()
 
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen()
+        fmt.Print("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
+        fmt.Print("romaji - prints both onyomi and kunyomi")
+        fmt.Println("hiragana - prints kunyomi with hiragana")
+        fmt.Println("katakana - prints onyomi")
         fmt.Print("Enter Input: (type 'exit' to quit)")
         scanner.Scan()
         userInput := scanner.Text()
