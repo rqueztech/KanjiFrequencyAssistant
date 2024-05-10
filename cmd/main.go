@@ -23,7 +23,7 @@ func clearScreen() {
     cmd.Run()
 }
 
-func printMap(title string, map_result []rune, userInput string) {
+func printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune) {
     // Print out the name of the function
     fmt.Printf("============ %s ================", title)
     
@@ -32,8 +32,9 @@ func printMap(title string, map_result []rune, userInput string) {
         escaped:= url.QueryEscape(string(currentRune))
         
         kanjiString := string(currentRune)
+        meaningString := string((*meaning_map)[kanjiString])
 
-        fmt.Printf("\n%s -> https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, escaped)
+        fmt.Printf("\n%s -> %s : https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, meaningString, escaped)
     }    
 
     fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
@@ -47,10 +48,6 @@ func handleError(err error, message string) {
     }
 }
 
-// Create a struct to define maps needed to import
-type KanjiMaps struct {
-
-}
 
 // Main function
 func main() {
@@ -70,6 +67,12 @@ func main() {
     csv_as_kunyomi_hiragana_map, err := ReadCSV("./resources/KunyomiWithHiragana.csv")
     handleError(err, "csv_as_kunyomi_hiragana_map")
     
+    csv_as_definitions, err := ReadCSV("./resources/KanjiMeanings.csv")
+    handleError(err, "csv_as_definitions")
+    
+    fmt.Println(csv_as_definitions)
+    scanner.Scan()
+
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen()
@@ -89,15 +92,15 @@ func main() {
 
         // Send each string into the printMap
         if onyomi_result != nil {
-            printMap("Onyomi", onyomi_result, userInput)
+            printMap("Onyomi", onyomi_result, userInput, &csv_as_definitions)
         }
 
         if kunyomi_result != nil {
-            printMap("Kunyomi", kunyomi_result, userInput)
+            printMap("Kunyomi", kunyomi_result, userInput, &csv_as_definitions)
         }
 
         if kunyomi_hiragana_result != nil {
-            printMap("Kunyomi with Hiragana", kunyomi_hiragana_result, userInput)
+            printMap("Kunyomi with Hiragana", kunyomi_hiragana_result, userInput, &csv_as_definitions)
         }
 
         fmt.Println("Press enter to continue...")
