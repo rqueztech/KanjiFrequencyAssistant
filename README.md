@@ -1,4 +1,3 @@
-# !!!!!!!!!!!!WARNING!!!!!!!!!!!! -> Many mistakes found (incorrect data, false positives). Data must be cleaned and fixed.
 # ABOUT
 Learning Japense Kanji is hard enough, but what is so difficult is figuring out the readings. The purpose of this program is to allow you to enter a reading (romanized or in hiragana), to retrieve all permuations along with links to jisho.org.
 # CURRENT FEATURES
@@ -17,3 +16,5 @@ https://www.jisho.org - external links to kanji readings with very detailed info
 * Make the program accessible through command line interface globally, where calling the name followed by desired reading will immediately print out results.
 * Rewrite assistant tools being used in bash and golang.
 * Concurrency in reading all 3 csv files in at the same time if possible
+
+# FEEL FREE TO REPORT ANY ERRORS OR FORK OUT
