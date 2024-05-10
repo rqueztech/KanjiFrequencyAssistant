@@ -32,12 +32,22 @@ func printMap(title string, datamap map[string][]rune, userInput string) {
         for _, currentRune := range(val) {
             escaped:= url.QueryEscape(string(currentRune))
             
-            fmt.Printf("\n%s: https://www.jisho.org/search/%s%%20%%23kanji", string(currentRune), escaped)
+            kanjiString := string(currentRune)
+
+            fmt.Printf("\n%s -> https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, escaped)
         }    
 
         fmt.Printf("\nNumber of occurences: %d\n", len(val))
     } else {
         fmt.Println("DOES NOT EXIST")
+    }
+}
+
+// create function to handle error
+func handleError(err error, message string) {
+    if err != nil {
+        fmt.Println("Error: ", message)
+        fmt.Println("Error: ", err)
     }
 }
 
@@ -51,14 +61,14 @@ func main() {
     
     // Read the CSV file and set to hashmaps (Onyomi, Kunyomi, and Kunyomi with hiragana(verbs, adverbs, adjectives etc...))
     csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyListOnyomi.csv")
+    handleError(err, "csv_as_onyomi_map")
+
     csv_as_kunyomi_map, err := ReadCSV("./resources/KanjiFrequencyListKunyomi.csv")
+    handleError(err, "csv_as_kunyomi_map")
+
     csv_as_kunyomi_hiragana_map, err := ReadCSV("./resources/KunyomiWithHiragana.csv")
-
-    // Check if there is an error
-    if err != nil {
-        fmt.Println(err)
-    }
-
+    handleError(err, "csv_as_kunyomi_hiragana_map")
+    
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen()
