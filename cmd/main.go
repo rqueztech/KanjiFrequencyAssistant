@@ -5,8 +5,23 @@ import (
     "fmt" // import the fmt package for printing
     "bufio" // import bufio to scan in user input
     "os"
+    "os/exec"
+    "runtime"
     "net/url"
 )
+
+func clearScreen() {
+    var cmd *exec.Cmd
+
+    if runtime.GOOS == "windows" {
+        cmd = exec.Command("cmd", "/c", "cls")
+    } else {
+        cmd = exec.Command("clear")
+    }
+
+    cmd.Stdout = os.Stdout
+    cmd.Run()
+}
 
 func printMap(title string, datamap map[string][]rune, userInput string) {
     // Print out the name of the function
@@ -24,8 +39,6 @@ func printMap(title string, datamap map[string][]rune, userInput string) {
     } else {
         fmt.Println("DOES NOT EXIST")
     }
-
-
 }
 
 // Main function
@@ -48,6 +61,7 @@ func main() {
 
     // Loop to keep the program running unless the user types in "exit"
     for {
+        clearScreen()
         fmt.Print("Enter Input: (type 'exit' to quit)")
         scanner.Scan()
         userInput := scanner.Text()
@@ -60,5 +74,8 @@ func main() {
         printMap("Onyomi", csv_as_onyomi_map, userInput)
         printMap("Kunyomi", csv_as_kunyomi_map, userInput)
         printMap("Kunyomi with Hiragana", csv_as_kunyomi_hiragana_map, userInput)
+
+        fmt.Println("Press enter to continue...")
+        scanner.Scan()
     }
 }
