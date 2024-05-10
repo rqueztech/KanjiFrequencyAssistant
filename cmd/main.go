@@ -23,13 +23,13 @@ func clearScreen() {
     cmd.Run()
 }
 
-func printMap(title string, datamap map[string][]rune, userInput string) {
+func printMap(title string, map_result []rune, userInput string) {
     // Print out the name of the function
     fmt.Printf("============ %s ================", title)
     
     // Check if the value exists in the map, if not prints out DOES NOT EXIST
-    if val, ok := datamap[userInput]; ok {
-        for _, currentRune := range(val) {
+    if map_result != nil {
+        for _, currentRune := range(map_result) {
             escaped:= url.QueryEscape(string(currentRune))
             
             kanjiString := string(currentRune)
@@ -37,7 +37,7 @@ func printMap(title string, datamap map[string][]rune, userInput string) {
             fmt.Printf("\n%s -> https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, escaped)
         }    
 
-        fmt.Printf("\nNumber of occurences: %d\n", len(val))
+        fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
     } else {
         fmt.Println("DOES NOT EXIST")
     }
@@ -81,9 +81,13 @@ func main() {
             break
         }
 
-        printMap("Onyomi", csv_as_onyomi_map, userInput)
-        printMap("Kunyomi", csv_as_kunyomi_map, userInput)
-        printMap("Kunyomi with Hiragana", csv_as_kunyomi_hiragana_map, userInput)
+        onyomi_result := csv_as_onyomi_map[userInput]
+        kunyomi_result := csv_as_kunyomi_map[userInput]
+        kunyomi_hiragana_result := csv_as_kunyomi_hiragana_map[userInput]
+
+        printMap("Onyomi", onyomi_result, userInput)
+        printMap("Kunyomi", kunyomi_result, userInput)
+        printMap("Kunyomi with Hiragana", kunyomi_hiragana_result, userInput)
 
         fmt.Println("Press enter to continue...")
         scanner.Scan()
