@@ -28,19 +28,15 @@ func printMap(title string, map_result []rune, userInput string) {
     fmt.Printf("============ %s ================", title)
     
     // Check if the value exists in the map, if not prints out DOES NOT EXIST
-    if map_result != nil {
-        for _, currentRune := range(map_result) {
-            escaped:= url.QueryEscape(string(currentRune))
-            
-            kanjiString := string(currentRune)
+    for _, currentRune := range(map_result) {
+        escaped:= url.QueryEscape(string(currentRune))
+        
+        kanjiString := string(currentRune)
 
-            fmt.Printf("\n%s -> https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, escaped)
-        }    
+        fmt.Printf("\n%s -> https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, escaped)
+    }    
 
-        fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
-    } else {
-        fmt.Println("DOES NOT EXIST")
-    }
+    fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
 }
 
 // create function to handle error
@@ -49,6 +45,11 @@ func handleError(err error, message string) {
         fmt.Println("Error: ", message)
         fmt.Println("Error: ", err)
     }
+}
+
+// Create a struct to define maps needed to import
+type KanjiMaps struct {
+
 }
 
 // Main function
@@ -80,14 +81,24 @@ func main() {
             fmt.Println("Exiting the program...")
             break
         }
-
+        
+        // Use the input put in by the user to do checks to see if the value exists
         onyomi_result := csv_as_onyomi_map[userInput]
         kunyomi_result := csv_as_kunyomi_map[userInput]
         kunyomi_hiragana_result := csv_as_kunyomi_hiragana_map[userInput]
 
-        printMap("Onyomi", onyomi_result, userInput)
-        printMap("Kunyomi", kunyomi_result, userInput)
-        printMap("Kunyomi with Hiragana", kunyomi_hiragana_result, userInput)
+        // Send each string into the printMap
+        if onyomi_result != nil {
+            printMap("Onyomi", onyomi_result, userInput)
+        }
+
+        if kunyomi_result != nil {
+            printMap("Kunyomi", kunyomi_result, userInput)
+        }
+
+        if kunyomi_hiragana_result != nil {
+            printMap("Kunyomi with Hiragana", kunyomi_hiragana_result, userInput)
+        }
 
         fmt.Println("Press enter to continue...")
         scanner.Scan()
