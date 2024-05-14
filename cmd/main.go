@@ -53,17 +53,34 @@ func handleError(err error, message string) {
 func main() {
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
-    
+
+    // Create a wait group to wait for all the goroutines to finish
+    var waitGroup sync.WaitGroup
+
+    // Make four different string channels to process csv files
+    onyomiChannel := make(chan map[string][]rune)
+    kunyomiChannel := make(chan map[string][]rune)
+    kunyomiHiraganaChannel := make(chan map[string][]rune)
+    definitionsChannel := make(chan map[string][]rune)
+
+    // create a wait group of 4 which waits for all four csvs to be read in
+    vg.Add(4)
+
     // Read the CSV file and set to hashmaps (Onyomi, Kunyomi, and Kunyomi with hiragana(verbs, adverbs, adjectives etc...))
+    
+    go ReadCSV("./resources/KanjiFrequencyListOnyomi.csv", onyomiChannel)
     csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyListOnyomi.csv")
     handleError(err, "csv_as_onyomi_map")
 
+    go ReadCSV("./resources/KanjiFrequencyListKunyomi.csv", kunyomiChannel)
     csv_as_kunyomi_map, err := ReadCSV("./resources/KanjiFrequencyListKunyomi.csv")
     handleError(err, "csv_as_kunyomi_map")
 
+    go ReadCSV("./resources/KunyomiWithHiragana.csv", kunyomiHiraganaChannel)
     csv_as_kunyomi_hiragana_map, err := ReadCSV("./resources/KunyomiWithHiragana.csv")
     handleError(err, "csv_as_kunyomi_hiragana_map")
     
+    go ReadCSV("./resources/KanjiMeanings.csv", definitionsChannel)
     csv_as_definitions, err := ReadCSV("./resources/KanjiMeanings.csv")
     handleError(err, "csv_as_definitions")
     
