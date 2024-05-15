@@ -100,7 +100,7 @@ func main() {
         }(filePath)
     }
 
-    wg.Wait()
+    defer wg.Wait()
 
     //handleError(err, "csv_as_onyomi_map")
     //handleError(err, "csv_as_kunyomi_map")
