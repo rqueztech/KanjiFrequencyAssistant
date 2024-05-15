@@ -54,36 +54,28 @@ func main() {
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
-    // Create a wait group to wait for all the goroutines to finish
-    var waitGroup sync.WaitGroup
+    // Create a waitgroup
+    var wg sync.WaitGroup
 
-    // Make four different string channels to process csv files
-    onyomiChannel := make(chan map[string][]rune)
-    kunyomiChannel := make(chan map[string][]rune)
-    kunyomiHiraganaChannel := make(chan map[string][]rune)
-    definitionsChannel := make(chan map[string][]rune)
+    // create four different maps of type map[string][]rune. these will return the map returned by ReadCSV
+    var onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings = map[string][]rune
 
-    // create a wait group of 4 which waits for all four csvs to be read in
-    vg.Add(4)
+    // Create  string array of filepaths, this will help us save into proper map
+    filePaths := []string {
+        "./resources/KanjiFrequencyListOnyomi.csv"
+        "./resources/KanjiFrequencyListKunyomi.csv"
+        "./resources/KunyomiWithHiragana.csv"
+        "./resources/KanjiMeanings.csv"
+    }
 
-    // Read the CSV file and set to hashmaps (Onyomi, Kunyomi, and Kunyomi with hiragana(verbs, adverbs, adjectives etc...))
-    
-    go ReadCSV("./resources/KanjiFrequencyListOnyomi.csv", onyomiChannel)
-    csv_as_onyomi_map, err := ReadCSV("./resources/KanjiFrequencyListOnyomi.csv")
-    handleError(err, "csv_as_onyomi_map")
+    lenFiles = len(filepaths)
 
-    go ReadCSV("./resources/KanjiFrequencyListKunyomi.csv", kunyomiChannel)
-    csv_as_kunyomi_map, err := ReadCSV("./resources/KanjiFrequencyListKunyomi.csv")
-    handleError(err, "csv_as_kunyomi_map")
+    wg.Add(lenFiles)
 
-    go ReadCSV("./resources/KunyomiWithHiragana.csv", kunyomiHiraganaChannel)
-    csv_as_kunyomi_hiragana_map, err := ReadCSV("./resources/KunyomiWithHiragana.csv")
-    handleError(err, "csv_as_kunyomi_hiragana_map")
-    
-    go ReadCSV("./resources/KanjiMeanings.csv", definitionsChannel)
-    csv_as_definitions, err := ReadCSV("./resources/KanjiMeanings.csv")
-    handleError(err, "csv_as_definitions")
-    
+    //handleError(err, "csv_as_onyomi_map")
+    //handleError(err, "csv_as_kunyomi_map")
+    //handleError(err, "csv_as_kunyomi_hiragana_map")
+    //handleError(err, "csv_as_definitions")
 
     // Loop to keep the program running unless the user types in "exit"
     for {
