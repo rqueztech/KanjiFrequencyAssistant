@@ -80,34 +80,29 @@ func main() {
             csvMap, err := ReadCSV(filePath)
             
             if err != nil {
-                handleError(err, "File Wrong: " + filePath)
+                handleError(err, "Error with file path: " + filePath)
                 return
             }
+
             switch filePath {
-            case "./resources/KanjiFrequencyListOnyomi.csv":
-                onyomiMap = csvMap
+                case "./resources/KanjiFrequencyListOnyomi.csv":
+                    onyomiMap = csvMap
 
-            case "./resources/KanjiFrequencyListKunyomi.csv": 
-                kunyomiMap = csvMap
+                case "./resources/KanjiFrequencyListKunyomi.csv": 
+                    kunyomiMap = csvMap
 
-            case "./resources/KunyomiWithHiragana.csv":
-                kunyomiWithHiragana = csvMap
+                case "./resources/KunyomiWithHiragana.csv":
+                    kunyomiWithHiragana = csvMap
 
-            case "./resources/KanjiMeanings.csv":
-                kanjiMeanings = csvMap
+                case "./resources/KanjiMeanings.csv":
+                    kanjiMeanings = csvMap
             }
 
         }(filePath)
     }
 
+    // Wait for all the go routines to finish, wait on all four files
     defer wg.Wait()
-
-    //handleError(err, "csv_as_onyomi_map")
-    //handleError(err, "csv_as_kunyomi_map")
-    //handleError(err, "csv_as_kunyomi_hiragana_map")
-    //handleError(err, "kanjiMeanings")
-
-    
 
     // Loop to keep the program running unless the user types in "exit"
     for {
