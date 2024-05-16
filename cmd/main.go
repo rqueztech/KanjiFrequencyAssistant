@@ -24,10 +24,16 @@ func clearScreen() {
     cmd.Run()
 }
 
-func printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune) {
+
+type KanjiReadings struct {
+    readings map[string][]rune
+}
+
+func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune) {
     // Print out the name of the function
     fmt.Printf("============ %s ================", title)
     
+
     // Check if the value exists in the map, if not prints out DOES NOT EXIST
     for _, currentRune := range(map_result) {
         escaped:= url.QueryEscape(string(currentRune))
@@ -35,8 +41,13 @@ func printMap(title string, map_result []rune, userInput string, meaning_map *ma
         kanjiString := string(currentRune)
         meaningString := string((*meaning_map)[kanjiString])
 
-        fmt.Printf("\n%s -> %s : https://www.jisho.org/search/%s%%20%%23kanji", kanjiString, meaningString, escaped)
+        fmt.Printf("\n%s -> %s : https://www.jisho.org/search/%s%%20%%23kanji\n", kanjiString, meaningString, escaped)
+        
+
+        fmt.Println(string(kmap.readings[kanjiString]))
+
     }    
+
 
     fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
 }
@@ -52,6 +63,8 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
+    // create the pointer to the KanjiReadings struct
+
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
@@ -67,7 +80,10 @@ func main() {
         "./resources/KanjiFrequencyListKunyomi.csv",
         "./resources/KunyomiWithHiragana.csv",
         "./resources/KanjiMeanings.csv",
+        "./resources/all_readings_string.csv",
     }
+
+    var kanjiReadings *KanjiReadings
 
     lenFiles := len(filePaths)
 
@@ -96,6 +112,13 @@ func main() {
 
                 case "./resources/KanjiMeanings.csv":
                     kanjiMeanings = csvMap
+
+                case "./resources/all_readings_string.csv":
+                    // setting the csvmap directly into the KanjiReadings map
+                    kanjiReadings = &KanjiReadings {
+                        readings: csvMap,
+                    }
+
             }
 
         }(filePath)
@@ -122,15 +145,15 @@ func main() {
        
         // Send each string into the printMap
         if onyomiMap != nil {
-            printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings)
         }
 
         if kunyomiMap != nil {
-            printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings)
         }
 
         if kunyomiWithHiragana != nil {
-            printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings)
         }
 
         fmt.Println("Press enter to continue...")
