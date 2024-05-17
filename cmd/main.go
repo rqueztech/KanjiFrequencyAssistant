@@ -2,54 +2,78 @@
 package main
 
 import (
-    "fmt" // import the fmt package for printing
     "bufio" // import bufio to scan in user input
+    "fmt" // import the fmt package for printing
+    "net/url"
     "os"
     "os/exec"
     "runtime"
-    "net/url"
+    "strings"
     "sync"
 )
 
+// Read the from the os/exec package and create custom clearscreen
 func clearScreen() {
+    // Create a pointer to the exec.Cmd struct, which is used to build the command to be used.
     var cmd *exec.Cmd
 
+    // Check the runtime of the OS and create the command accordingly
     if runtime.GOOS == "windows" {
         cmd = exec.Command("cmd", "/c", "cls")
     } else {
         cmd = exec.Command("clear")
     }
 
+    // Set the Stdout to the os.Stdout
     cmd.Stdout = os.Stdout
+
+    // Run the command that was created
     cmd.Run()
 }
-
 
 type KanjiReadings struct {
     readings map[string][]rune
 }
 
-func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune) {
+type Builder struct {
+    strings.Builder
+}
+
+func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune, readings bool, b* Builder) {
     // Print out the name of the function
-    fmt.Printf("============ %s ================", title)
+
+    // Jisho link string baseline
+    jishoBaseLink := "https://www.jisho.org/search/"
     
+    if map_result != nil {
+        fmt.Printf("============ %s ================", title)
 
-    // Check if the value exists in the map, if not prints out DOES NOT EXIST
-    for _, currentRune := range(map_result) {
-        escaped:= url.QueryEscape(string(currentRune))
-        
-        kanjiString := string(currentRune)
-        meaningString := string((*meaning_map)[kanjiString])
+        // Check if the value exists in the map, if not prints out DOES NOT EXIST
+        for _, currentKanjiRune := range(map_result) {
+            kanjiString := string(currentKanjiRune)
+            escaped:= url.QueryEscape(kanjiString)
+            b.WriteString(jishoBaseLink)
+            b.WriteString(string(escaped))
+            b.WriteString("%20%23kanji")
+            kanjilink := b.String()
 
-        fmt.Printf("\n%s -> %s : https://www.jisho.org/search/%s%%20%%23kanji\n", kanjiString, meaningString, escaped)
-        
+            b.Reset()
 
-        fmt.Println(string(kmap.readings[kanjiString]))
+            currentKanji := string(currentKanjiRune)
+            meaningString := string((*meaning_map)[currentKanji])
 
-    }    
+            fmt.Printf("\n%s -> %s (%s): %s\n", kanjiString, meaningString, userInput, kanjilink)
+            
+            if readings == true {
+                readings := string(kmap.readings[kanjiString])
+                readings = strings.ReplaceAll(readings, "\\n", "\n")
+                fmt.Println(readings)
+                fmt.Printf("", )
+            }
+        } 
 
-
-    fmt.Printf("\nNumber of occurences: %d\n", len(map_result))
+        fmt.Printf("\nNumber of [[%s]] readings --> : %d\n", userInput, len(map_result))
+    }
 }
 
 // create function to handle error
@@ -63,10 +87,14 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
-    // create the pointer to the KanjiReadings struct
+    // create and initialize a builder
+    builder := Builder{}
 
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
+
+    // create a boolean to track readings
+    var readings bool = true
 
     // Create a waitgroup
     var wg sync.WaitGroup
@@ -134,29 +162,34 @@ func main() {
         fmt.Print("romaji - prints both onyomi and kunyomi")
         fmt.Println("hiragana - prints kunyomi with hiragana")
         fmt.Println("katakana - prints onyomi")
-        fmt.Print("Enter Input: (type 'exit' to quit)")
+        fmt.Print("Enter Input: (type 'exit' to quit, 'readings' to print out the readings as well)")
         scanner.Scan()
         userInput := scanner.Text()
 
         if userInput == "exit" {
             fmt.Println("Exiting the program...")
             break
+        } else if userInput == "readings" {
+            readings = !readings
+            fmt.Println("Reading data silenced...")
+            _ = bufio.NewScanner(os.Stdin)
+            continue
         }
        
         // Send each string into the printMap
         if onyomiMap != nil {
-            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings, readings, &builder)
         }
 
         if kunyomiMap != nil {
-            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings, readings, &builder)
         }
 
         if kunyomiWithHiragana != nil {
-            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings)
+            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings, readings, &builder)
         }
-
-        fmt.Println("Press enter to continue...")
-        scanner.Scan()
+        
+        fmt.Println("Press Enter to continue...")
+        fmt.Scanln()
     }
 }
