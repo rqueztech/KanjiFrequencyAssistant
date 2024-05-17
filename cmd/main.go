@@ -7,6 +7,7 @@ import (
     "net/url"
     "os"
     "os/exec"
+    "regexp"
     "runtime"
     "strings"
     "sync"
@@ -33,13 +34,11 @@ func clearScreen() {
 
 type KanjiReadings struct {
     readings map[string][]rune
-}
-
-type Builder struct {
     strings.Builder
+    regex *regexp.Regexp
 }
 
-func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune, readings bool, b* Builder) {
+func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune, readings bool) {
     // Print out the name of the function
 
     // Jisho link string baseline
@@ -52,12 +51,14 @@ func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput s
         for _, currentKanjiRune := range(map_result) {
             kanjiString := string(currentKanjiRune)
             escaped:= url.QueryEscape(kanjiString)
-            b.WriteString(jishoBaseLink)
-            b.WriteString(string(escaped))
-            b.WriteString("%20%23kanji")
-            kanjilink := b.String()
+            
+            kanjiOps.WriteString(jishoBaseLink)
+            kanjiOps.WriteString(string(escaped))
+            kanjiOps.WriteString("%20%23kanji")
+            
+            kanjilink := kanjiOps.String()
 
-            b.Reset()
+            kanjiOps.Reset()
 
             currentKanji := string(currentKanjiRune)
             meaningString := string((*meaning_map)[currentKanji])
@@ -65,7 +66,11 @@ func (kmap* KanjiReadings) printMap(title string, map_result []rune, userInput s
             fmt.Printf("\n%s -> %s (%s): %s\n", kanjiString, meaningString, userInput, kanjilink)
             
             if readings == true {
-                readings := string(kmap.readings[kanjiString])
+                kanjiOps.WriteString(jishoBaseLink)
+                kanjiOps.WriteString(string(escaped))
+                kanjiOps.WriteString("%20%23kanji")
+
+                readings := string(kanjiOps.readings[kanjiString])
                 readings = strings.ReplaceAll(readings, "\\n", "\n")
                 fmt.Println(readings)
                 fmt.Printf("", )
@@ -87,9 +92,6 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
-    // create and initialize a builder
-    builder := Builder{}
-
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
@@ -178,15 +180,15 @@ func main() {
        
         // Send each string into the printMap
         if onyomiMap != nil {
-            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings, readings, &builder)
+            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings, readings)
         }
 
         if kunyomiMap != nil {
-            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings, readings, &builder)
+            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings, readings)
         }
 
         if kunyomiWithHiragana != nil {
-            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings, readings, &builder)
+            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings, readings)
         }
         
         fmt.Println("Press Enter to continue...")
