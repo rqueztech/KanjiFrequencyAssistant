@@ -33,12 +33,14 @@ func clearScreen() {
 }
 
 type KanjiReadings struct {
-    readings map[string][]rune
+    sync.Mutex
+    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings map[string][]rune
+
     strings.Builder
     regex *regexp.Regexp
 }
 
-func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, meaning_map *map[string][]rune, readings bool) {
+func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
 
     // Jisho link string baseline
@@ -61,7 +63,7 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
             kanjiOps.Reset()
 
             currentKanji := string(currentKanjiRune)
-            meaningString := string((*meaning_map)[currentKanji])
+            meaningString := string(kanjiOps.readings[currentKanji])
 
             fmt.Printf("\n%s -> %s (%s): %s\n", kanjiString, meaningString, userInput, kanjilink)
             
@@ -92,6 +94,9 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
+    // create kanji ops blank pointer
+    kanjiOps := &KanjiReadings{}
+
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
@@ -100,9 +105,6 @@ func main() {
 
     // Create a waitgroup
     var wg sync.WaitGroup
-
-    // create four different maps of type map[string][]rune. these will return the map returned by ReadCSV
-    var onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings map[string][]rune
 
     // Create  string array of filepaths, this will help us save into proper map
     filePaths := []string {
@@ -113,8 +115,6 @@ func main() {
         "./resources/all_readings_string.csv",
     }
 
-    var kanjiReadings *KanjiReadings
-
     lenFiles := len(filePaths)
 
     wg.Add(lenFiles)
@@ -123,6 +123,8 @@ func main() {
     for _, filePath := range filePaths {
         go func(filePath string) {
             defer wg.Done()
+            kanjiOps.Lock()
+            defer kanjiOps.Unlock()
             csvMap, err := ReadCSV(filePath)
             
             if err != nil {
@@ -130,25 +132,23 @@ func main() {
                 return
             }
 
+
             switch filePath {
                 case "./resources/KanjiFrequencyListOnyomi.csv":
-                    onyomiMap = csvMap
+                    kanjiOps.onyomiMap = csvMap
 
                 case "./resources/KanjiFrequencyListKunyomi.csv": 
-                    kunyomiMap = csvMap
+                    kanjiOps.kunyomiMap = csvMap
 
                 case "./resources/KunyomiWithHiragana.csv":
-                    kunyomiWithHiragana = csvMap
+                    kanjiOps.kunyomiWithHiragana = csvMap
 
                 case "./resources/KanjiMeanings.csv":
-                    kanjiMeanings = csvMap
+                    kanjiOps.kanjiMeanings = csvMap
 
                 case "./resources/all_readings_string.csv":
                     // setting the csvmap directly into the KanjiReadings map
-                    kanjiReadings = &KanjiReadings {
-                        readings: csvMap,
-                    }
-
+                    kanjiOps.readings = csvMap
             }
 
         }(filePath)
@@ -179,16 +179,16 @@ func main() {
         }
        
         // Send each string into the printMap
-        if onyomiMap != nil {
-            kanjiReadings.printMap("Onyomi", onyomiMap[userInput], userInput, &kanjiMeanings, readings)
+        if kanjiOps.onyomiMap != nil {
+            kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
         }
 
-        if kunyomiMap != nil {
-            kanjiReadings.printMap("Kunyomi", kunyomiMap[userInput], userInput, &kanjiMeanings, readings)
+        if kanjiOps.kunyomiMap != nil {
+            kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
         }
 
-        if kunyomiWithHiragana != nil {
-            kanjiReadings.printMap("Kunyomi with Hiragana", kunyomiWithHiragana[userInput], userInput, &kanjiMeanings, readings)
+        if kanjiOps.kunyomiWithHiragana != nil {
+            kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
         }
         
         fmt.Println("Press Enter to continue...")
