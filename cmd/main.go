@@ -53,30 +53,31 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
         for _, currentKanjiRune := range(map_result) {
             kanjiString := string(currentKanjiRune)
             escaped:= url.QueryEscape(kanjiString)
-            
-            kanjiOps.WriteString(jishoBaseLink)
-            kanjiOps.WriteString(string(escaped))
-            kanjiOps.WriteString("%20%23kanji")
-            
-            kanjilink := kanjiOps.String()
-
-            kanjiOps.Reset()
 
             currentKanji := string(currentKanjiRune)
-            meaningString := string(kanjiOps.readings[currentKanji])
+            readingString := string(kanjiOps.readings[currentKanji])
+            readingString = strings.ReplaceAll(readingString, "\\n", "\n")
+            meaningString := string(kanjiOps.kanjiMeanings[currentKanji])
 
-            fmt.Printf("\n%s -> %s (%s): %s\n", kanjiString, meaningString, userInput, kanjilink)
-            
             if readings == true {
+                kanjiOps.WriteString("\nLink: ")
                 kanjiOps.WriteString(jishoBaseLink)
                 kanjiOps.WriteString(string(escaped))
                 kanjiOps.WriteString("%20%23kanji")
 
-                readings := string(kanjiOps.readings[kanjiString])
-                readings = strings.ReplaceAll(readings, "\\n", "\n")
-                fmt.Println(readings)
-                fmt.Printf("", )
-            }
+                kanjilink := kanjiOps.String()
+                linkOutput := strings.ReplaceAll(kanjilink, "\\n", "\n")
+                kanjiOps.Reset()
+                    fmt.Printf("\n%s (%s): %s -> %s %s\n", kanjiString, userInput, meaningString, readingString, linkOutput)
+                } else {
+                    kanjiOps.WriteString(jishoBaseLink)
+                    kanjiOps.WriteString(string(escaped))
+                    kanjiOps.WriteString("%20%23kanji")
+
+                    linkOutput := kanjiOps.String()
+                    fmt.Printf("\n%s (%s): %s -> %s", kanjiString, userInput, meaningString, linkOutput)
+                    kanjiOps.Reset()
+                }
         } 
 
         fmt.Printf("\nNumber of [[%s]] readings --> : %d\n", userInput, len(map_result))
@@ -160,11 +161,15 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen()
-        fmt.Print("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
-        fmt.Print("romaji - prints both onyomi and kunyomi")
-        fmt.Println("hiragana - prints kunyomi with hiragana")
-        fmt.Println("katakana - prints onyomi")
-        fmt.Print("Enter Input: (type 'exit' to quit, 'readings' to print out the readings as well)")
+        fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
+        fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
+        
+        if readings == true {
+            fmt.Println("Reading data enabled...")
+        } else {
+            fmt.Println("Reading data silenced...")
+        }
+
         scanner.Scan()
         userInput := scanner.Text()
 
