@@ -179,57 +179,60 @@ func main() {
         scanner.Scan()
         applicationSelector := scanner.Text()
         
-        if applicationSelector == "1" {
-            clearScreen()
-            fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
-            fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
-        } else if applicationSelector == "2" {
-            clearScreen()
-            fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings")
-        }
+        userInput := ""
 
-        scanner.Scan()
-        userInput := scanner.Text()
-
-        if readings == true {
-            fmt.Println("Reading data enabled...")
-        } else {
-            fmt.Println("Reading data silenced...")
-        }
-
-        
-        if userInput == "exit" {
-            fmt.Println("Exiting the program...")
-            break
-        } else if userInput == "readings" {
-            readings = !readings
-            fmt.Println("Reading data silenced...")
-            _ = bufio.NewScanner(os.Stdin)
-            continue
-        }
-
-        if applicationSelector == "1" {
-            fmt.Println("IS REACHING 1 Option")
-            // Send each string into the printMap
-            if kanjiOps.onyomiMap != nil {
-                kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
+        for userInput != "exit" {
+            if applicationSelector == "1" {
+                clearScreen()
+                fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
+                fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
+            } else if applicationSelector == "2" {
+                clearScreen()
+                fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
             }
 
-            if kanjiOps.kunyomiMap != nil {
-                kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
+            scanner.Scan()
+            userInput = scanner.Text()
+
+            if readings == true {
+                fmt.Println("Reading data enabled...")
+            } else {
+                fmt.Println("Reading data silenced...")
             }
 
-            if kanjiOps.kunyomiWithHiragana != nil {
-                kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+            
+            if userInput == "exit" {
+                fmt.Println("Exiting the program...")
+                break
+            } else if userInput == "readings" {
+                readings = !readings
+                fmt.Println("Reading data silenced...")
+                _ = bufio.NewScanner(os.Stdin)
+                continue
             }
-        } else if applicationSelector == "2" {
-            fmt.Println("IS REACHING 1 Option")
-            if kanjiOps.keigoMap != nil {
-                kanjiOps.printmapkeigo(userInput)
+
+            if applicationSelector == "1" {
+                fmt.Println("IS REACHING 1 Option")
+                // Send each string into the printMap
+                if kanjiOps.onyomiMap != nil {
+                    kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
+                }
+
+                if kanjiOps.kunyomiMap != nil {
+                    kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
+                }
+
+                if kanjiOps.kunyomiWithHiragana != nil {
+                    kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+                }
+            } else if applicationSelector == "2" {
+                fmt.Println("IS REACHING 1 Option")
+                if kanjiOps.keigoMap != nil {
+                    kanjiOps.printmapkeigo(userInput)
+                }
             }
+            fmt.Println("Press Enter to continue...")
+            fmt.Scanln()
         }
-        
-        fmt.Println("Press Enter to continue...")
-        fmt.Scanln()
     }
 }
