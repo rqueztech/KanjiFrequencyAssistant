@@ -1,6 +1,5 @@
 see,*Meaning： see*Dictionary Form： 見る （miru）*Polite （teineigo）： 見ます （mimasu）*Respectful （sonkeigo）： ご覧になる （goーran ni naru）*Humble （kenjōgo）： 拝見する （haiken suru）
 think,*Meaning: think*Dictionary Form：思う（omou）*Polite： 思います（omoimasu）*Respectful： お思いになる（oー omoi ni naru）*Humble： 存じる（zonjiru）
-shiteiru,*Meaning： be doing*Dictionary Form： している（shiteiru）*Polite： しています（shiteimasu）*Respectful (sonkeigo)：ご存知です（gozonji desu）*Humble (kenjōgo)： 存じております（zonjite orimasu）、 しております（shite orimasu）
 look,*Meaning： look*Dictionary Form： 見る （miru）*Polite （teineigo）： 見ます （mimasu）*Respectful （sonkeigo）： ご覧になる （goーran ni naru）*Humble （kenjōgo）： 拝見する （haiken suru）
 watch,*Meaning： watch*Dictionary Form： 見る （miru）*Polite （teineigo）： 見ます （mimasu）*Respectful （sonkeigo）： ご覧になる （goーran ni naru）*Humble （kenjōgo）： 拝見する （haiken suru）
 meet,*Meaning： meet*Dictionary Form： 会う （au）*Polite （teineigo）： 会います （aimasu）*Respectful （sonkeigo）： お会いになる （oーai ni naru）*Humble （kenjōgo）： お目に掛かる （oーme ni kakaru）
@@ -25,3 +24,52 @@ to take,*Meaning：to take*Dictionary Form： 持っていく （motteiku）*Po
 to bring,*Meaning： to bring*Dictionary Form： 持ってくる （mottekuru）*Polite （teineigo）： 持ってきます （mottekimasu）
 being,*Meaning： being*Dictionary Form： である（de aru）*Polite （teineigo）： であります（de arimasu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
 to be,*Meaning： to be*Dictionary form： だ（da）*Polite （teineigo）： です（desu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
+miru,*Meaning： see*Dictionary Form： 見る （miru）*Polite （teineigo）： 見ます （mimasu）*Respectful （sonkeigo）： ご覧になる （goーran ni naru）*Humble （kenjōgo）： 拝見する （haiken suru）
+omou,*Meaning: think*Dictionary Form：思う（omou）*Polite： 思います（omoimasu）*Respectful： お思いになる（oー omoi ni naru）*Humble： 存じる（zonjiru）
+au,*Meaning： meet*Dictionary Form： 会う （au）*Polite （teineigo）： 会います （aimasu）*Respectful （sonkeigo）： お会いになる （oーai ni naru）*Humble （kenjōgo）： お目に掛かる （oーme ni kakaru）
+aru,*Meaning： be*Dictionary Form： ある （aru） or いる （iru）*Polite （teineigo）： あります （arimasu） or います （imasu）*Respectful （sonkeigo）： いらっしゃる （irassharu） ー> only for iru*Humble （kenjōgo）： ござる （gozaru） or おる （oru）
+iru,*Meaning： be*Dictionary Form： ある （aru） or いる （iru）*Polite （teineigo）： あります （arimasu） or います （imasu）*Respectful （sonkeigo）： いらっしゃる （irassharu） ー> only for iru*Humble （kenjōgo）： ござる （gozaru） or おる （oru）
+kuru,*Meaning： come*Dictionary Form： 来る （kuru、 come）*Polite （teineigo）： 来ます （kimasu）*Respectful （sonkeigo）： おいでになる （oーide ni naru）、いらしゃいます（irashaimasu）、お越しになります（okoshi ni narimasu）、見えます（miemasu）*Humble （kenjōgo）： 伺う （ukagau、 to respectful location）
+iku,*Meaning： go*Dictionary Form： 行く （iku、 go）*Polite （teineigo）： 行きます （ikimasu）*Respectful （sonkeigo）： おいでになる （oーide ni naru）、いらしゃいます(irashaimasu)*Humble （kenjōgo）： 参る （mairu、 otherwise）
+shiru,*Meaning： know*Dictionary Form： 知る （shiru）*Polite （teineigo）： 知ります （shirimasu）*Respectful （sonkeigo）： ご存じ （goーzonji）*Humble （kenjōgo）： 存じ上げる （zonji ageru）
+taberu,*Meaning： eat*Dictionary Form： 食べる （taberu、 eat）*Polite （teineigo）： 食べます （tabemasu）*Respectful （sonkeigo）： 召し上がる （meshiーagaru）*Humble （kenjōgo）： いただく （itadaku）
+nomu,*Meaning： drink*Dictionary Form： 飲む （nomu、 drink）*Polite （teineigo）： 飲みます （nomimasu）*Respectful （sonkeigo）： 召し上がる （meshiーagaru）*Humble （kenjōgo）： いただく （itadaku）
+morau,*Meaning： receive*Dictionary Form： もらう （morau）*Polite （teineigo）： もらいます （moraimasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： いただく （itadaku） or 頂戴する （chōdaiーsuru）
+give,*Meaning： give*Dictionary Form： あげる： やる（Kansai only）：くれる（kureru）*Polite （teineigo）：くれます（kuremasu ー＞ kureru）*Respectful：くださる（kudasaru ー＞ kureru） *humble（kenjogo）： 差しあげる （sashiageru ー＞ ageru、 yaru）
+suru,*Meaning： do*Dictionary Form： する （suru）*Polite （teineigo）： します （shimasu）*Respectful （sonkeigo）： なさる （nasaru）*Humble （kenjōgo）： 致す （itasu）
+iu,*Meaning： say*Dictionary Form： 言う （iu）*Polite （teineigo）： 言います （iimasu）*Respectful （sonkeigo）： おっしゃる （ossharu）*Humble （kenjōgo）： 申し上げる （mōshiーageru） or 申す （mōsu）
+kiru,*Meaning： put on （clothing）*Dictionary Form： 着る （kiru）*Polite （teineigo）： 着ます （kimasu）*Respectful （sonkeigo）： お召しになる （omeshi ni naru）*Humble （kenjōgo）：NONE
+kiru,*Meaning： put on （clothing）*Dictionary Form： 着る （kiru）*Polite （teineigo）： 着ます （kimasu）*Respectful （sonkeigo）： お召しになる （omeshi ni naru）*Humble （kenjōgo）：NONE
+neru,*Meaning： sleep*Dictionary Form： 寝る （neru）*Polite （teineigo）： 寝ます （nemasu）*Respectful （sonkeigo）： お休みになる （oーyasumi ni naru）*Humble （kenjōgo）：NONE
+shinu,*Meaning： die*Dictionary Form： 死ぬ （shinu）*Polite （teineigo）： 死にます （shinimasu）*Respectful （sonkeigo）： お亡くなりになる （oーnakunari ni naru）*Humble （kenjōgo）：NONE
+kiku,*Meaning： ask*Dictionary Form： 聞く （kiku） or 尋ねる （tazuneru）*Polite （teineigo）： 聞きます （kikimasu） or 尋ねる（tazunemasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： 伺う （ukagau）
+tazuneru,*Meaning： visit*Dictionary Form： 訪ねる （tazuneru）*Polite （teineigo）： 訪ねます （tazunemasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： 伺う （ukagau）
+sundeiru,*Meaning： living*Dictionary Form： 住んでいる （sundeiru）*Polite （teineigo）： 住んでいます （sundeimasu）*Respectful （sonkeigo）： お住まいです （oーsumai desu）*Humble （kenjōgo）： NONE
+motteiku,*Meaning：to take*Dictionary Form： 持っていく （motteiku）*Polite （teineigo）： 持っていきます （motteikimasu）*Respectful （sonkeigo）： お持ちになる （oー mochi ni naru）*Humble （kenjōgo）：お持ちします （haishaku suru）
+mottekuru,*Meaning： to bring*Dictionary Form： 持ってくる （mottekuru）*Polite （teineigo）： 持ってきます （mottekimasu）
+de aru,*Meaning： being*Dictionary Form： である（de aru）*Polite （teineigo）： であります（de arimasu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
+da,*Meaning： to be*Dictionary form： だ（da）*Polite （teineigo）： です（desu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
+ご覧になる,*Meaning： see*Dictionary Form： 見る （miru）*Polite （teineigo）： 見ます （mimasu）*Respectful （sonkeigo）： ご覧になる （goーran ni naru）*Humble （kenjōgo）： 拝見する （haiken suru）
+思う,*Meaning: think*Dictionary Form：思う（omou）*Polite： 思います（omoimasu）*Respectful： お思いになる（oー omoi ni naru）*Humble： 存じる（zonjiru）
+会う,*Meaning： meet*Dictionary Form： 会う （au）*Polite （teineigo）： 会います （aimasu）*Respectful （sonkeigo）： お会いになる （oーai ni naru）*Humble （kenjōgo）： お目に掛かる （oーme ni kakaru）
+ある,*Meaning： be*Dictionary Form： ある （aru） or いる （iru）*Polite （teineigo）： あります （arimasu） or います （imasu）*Respectful （sonkeigo）： いらっしゃる （irassharu） ー> only for iru*Humble （kenjōgo）： ござる （gozaru） or おる （oru）
+来る,*Meaning： come*Dictionary Form： 来る （kuru、 come）*Polite （teineigo）： 来ます （kimasu）*Respectful （sonkeigo）： おいでになる （oーide ni naru）、いらしゃいます（irashaimasu）、お越しになります（okoshi ni narimasu）、見えます（miemasu）*Humble （kenjōgo）： 伺う （ukagau、 to respectful location）
+行く,*Meaning： go*Dictionary Form： 行く （iku、 go）*Polite （teineigo）： 行きます （ikimasu）*Respectful （sonkeigo）： おいでになる （oーide ni naru）、いらしゃいます(irashaimasu)*Humble （kenjōgo）： 参る （mairu、 otherwise）
+知る,*Meaning： know*Dictionary Form： 知る （shiru）*Polite （teineigo）： 知ります （shirimasu）*Respectful （sonkeigo）： ご存じ （goーzonji）*Humble （kenjōgo）： 存じ上げる （zonji ageru）
+食べる,*Meaning： eat*Dictionary Form： 食べる （taberu、 eat）*Polite （teineigo）： 食べます （tabemasu）*Respectful （sonkeigo）： 召し上がる （meshiーagaru）*Humble （kenjōgo）： いただく （itadaku）
+飲む,*Meaning： drink*Dictionary Form： 飲む （nomu、 drink）*Polite （teineigo）： 飲みます （nomimasu）*Respectful （sonkeigo）： 召し上がる （meshiーagaru）*Humble （kenjōgo）： いただく （itadaku）
+もらう,*Meaning： receive*Dictionary Form： もらう （morau）*Polite （teineigo）： もらいます （moraimasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： いただく （itadaku） or 頂戴する （chōdaiーsuru）
+あげる,*Meaning： give*Dictionary Form： あげる： やる（Kansai only）：くれる（kureru）*Polite （teineigo）：くれます（kuremasu ー＞ kureru）*Respectful：くださる（kudasaru ー＞ kureru） *humble（kenjogo）： 差しあげる （sashiageru ー＞ ageru、 yaru）
+くれる,*Meaning： give*Dictionary Form： あげる： やる（Kansai only）：くれる（kureru）*Polite （teineigo）：くれます（kuremasu ー＞ kureru）*Respectful：くださる（kudasaru ー＞ kureru） *humble（kenjogo）： 差しあげる （sashiageru ー＞ ageru、 yaru）
+する,*Meaning： do*Dictionary Form： する （suru）*Polite （teineigo）： します （shimasu）*Respectful （sonkeigo）： なさる （nasaru）*Humble （kenjōgo）： 致す （itasu）
+言う,*Meaning： say*Dictionary Form： 言う （iu）*Polite （teineigo）： 言います （iimasu）*Respectful （sonkeigo）： おっしゃる （ossharu）*Humble （kenjōgo）： 申し上げる （mōshiーageru） or 申す （mōsu）
+着る,*Meaning： put on （clothing）*Dictionary Form： 着る （kiru）*Polite （teineigo）： 着ます （kimasu）*Respectful （sonkeigo）： お召しになる （omeshi ni naru）*Humble （kenjōgo）：NONE
+寝る,*Meaning： sleep*Dictionary Form： 寝る （neru）*Polite （teineigo）： 寝ます （nemasu）*Respectful （sonkeigo）： お休みになる （oーyasumi ni naru）*Humble （kenjōgo）：NONE
+死ぬ,*Meaning： die*Dictionary Form： 死ぬ （shinu）*Polite （teineigo）： 死にます （shinimasu）*Respectful （sonkeigo）： お亡くなりになる （oーnakunari ni naru）*Humble （kenjōgo）：NONE
+尋ねる,*Meaning： ask*Dictionary Form： 聞く （kiku） or 尋ねる （tazuneru）*Polite （teineigo）： 聞きます （kikimasu） or 尋ねる（tazunemasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： 伺う （ukagau）
+聞く,*Meaning： ask*Dictionary Form： 聞く （kiku） or 尋ねる （tazuneru）*Polite （teineigo）： 聞きます （kikimasu） or 尋ねる（tazunemasu）*Respectful （sonkeigo）：NONE *Humble （kenjōgo）： 伺う （ukagau）
+住んでいる,*Meaning： living*Dictionary Form： 住んでいる （sundeiru）*Polite （teineigo）： 住んでいます （sundeimasu）*Respectful （sonkeigo）： お住まいです （oーsumai desu）*Humble （kenjōgo）： NONE
+持っていく,*Meaning：to take*Dictionary Form： 持っていく （motteiku）*Polite （teineigo）： 持っていきます （motteikimasu）*Respectful （sonkeigo）： お持ちになる （oー mochi ni naru）*Humble （kenjōgo）：お持ちします （haishaku suru）
+持ってくる,*Meaning： to bring*Dictionary Form： 持ってくる （mottekuru）*Polite （teineigo）： 持ってきます （mottekimasu）
+である,*Meaning： being*Dictionary Form： である（de aru）*Polite （teineigo）： であります（de arimasu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
+だ,*Meaning： to be*Dictionary form： だ（da）*Polite （teineigo）： です（desu）*Respectful （sonkeigo）： でいらっしゃる（de irassharu）*Humble （kenjōgo）： でござる（de gozaru）
