@@ -112,10 +112,11 @@ func main() {
 
     keigoOps := &KeigoReadings{}
 
+
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
-    // create a boolean to track readings
+    // create a bool to track readings
     var readings bool = true
 
     // Create a waitgroup
@@ -192,6 +193,11 @@ func main() {
             } else if applicationSelector == "2" {
                 clearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
+
+                for key, _ := range keigoOps.keigoMap {
+                    fmt.Printf("%s, ", key)
+                }
+                    
             }
 
             scanner.Scan()
@@ -215,7 +221,6 @@ func main() {
             }
 
             if applicationSelector == "1" {
-                fmt.Println("IS REACHING 1 Option")
                 // Send each string into the printMap
                 if kanjiOps.onyomiMap != nil {
                     kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
@@ -229,7 +234,6 @@ func main() {
                     kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
                 }
             } else if applicationSelector == "2" {
-                fmt.Println("IS REACHING 1 Option")
                 if keigoOps.keigoMap != nil {
                     keigoOps.printmapkeigo(userInput)
                 }
