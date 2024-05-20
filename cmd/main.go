@@ -32,9 +32,10 @@ func clearScreen() {
     cmd.Run()
 }
 
+// Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
 type KanjiReadings struct {
     sync.Mutex
-    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings map[string][]rune
+    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings, keigoMap map[string][]rune
 
     strings.Builder
     regex *regexp.Regexp
@@ -114,6 +115,7 @@ func main() {
         "./resources/KunyomiWithHiragana.csv",
         "./resources/KanjiMeanings.csv",
         "./resources/all_readings_string.csv",
+        "./resources/keigo_mapper.csv",
     }
 
     lenFiles := len(filePaths)
@@ -150,6 +152,9 @@ func main() {
                 case "./resources/all_readings_string.csv":
                     // setting the csvmap directly into the KanjiReadings map
                     kanjiOps.readings = csvMap
+
+                case "./resources/keigo_mapper.csv":
+                    kanjiOps.keigoMap = csvMap
             }
 
         }(filePath)
@@ -160,7 +165,12 @@ func main() {
 
     // Loop to keep the program running unless the user types in "exit"
     for {
-        clearScreen()
+        clearScreen() 
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Exit\nEnter Input: ")
+
+        scanner.Scan()
+        applicationSelector := scanner.Text()
+
         fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
         fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
         
@@ -170,7 +180,6 @@ func main() {
             fmt.Println("Reading data silenced...")
         }
 
-        scanner.Scan()
         userInput := scanner.Text()
 
         if userInput == "exit" {
@@ -182,18 +191,24 @@ func main() {
             _ = bufio.NewScanner(os.Stdin)
             continue
         }
-       
-        // Send each string into the printMap
-        if kanjiOps.onyomiMap != nil {
-            kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
-        }
 
-        if kanjiOps.kunyomiMap != nil {
-            kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
-        }
+        if applicationSelector == "1" {
+            // Send each string into the printMap
+            if kanjiOps.onyomiMap != nil {
+                kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
+            }
 
-        if kanjiOps.kunyomiWithHiragana != nil {
-            kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+            if kanjiOps.kunyomiMap != nil {
+                kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
+            }
+
+            if kanjiOps.kunyomiWithHiragana != nil {
+                kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+            }
+        } else if applicationSelector == "2" {
+            if kanjiOps.keigoMap != nil {
+                fmt.Println(kanjiOps.keigoMap)
+            }
         }
         
         fmt.Println("Press Enter to continue...")
