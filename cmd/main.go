@@ -149,8 +149,6 @@ func main() {
                 return
             }
 
-            keigoOps.keigoMap = csvMap
-
             switch filePath {
                 case "./resources/KanjiFrequencyListOnyomi.csv":
                     kanjiOps.onyomiMap = csvMap
@@ -167,6 +165,9 @@ func main() {
                 case "./resources/all_readings_string.csv":
                     // setting the csvmap directly into the KanjiReadings map
                     kanjiOps.readings = csvMap
+
+                case "./resources/keigo_mapper.csv":
+                    keigoOps.keigoMap = csvMap
             }
 
         }(filePath)
