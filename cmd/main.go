@@ -35,15 +35,18 @@ func clearScreen() {
 // Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
 type KanjiReadings struct {
     sync.Mutex
-    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings, keigoMap map[string][]rune
-
+    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings map[string][]rune
     strings.Builder
     regex *regexp.Regexp
 }
 
-func (kanjiops* KanjiReadings) printmapkeigo(userinput string) {
-    if kanjiops.keigoMap[userinput] != nil {
-        keigostring := string(kanjiops.keigoMap[userinput])
+type KeigoReadings struct {
+    keigoMap map[string][]rune
+}
+
+func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
+    if keigoOps.keigoMap[userinput] != nil {
+        keigostring := string(keigoOps.keigoMap[userinput])
         keigostring = strings.ReplaceAll(keigostring, "*", "\n")
         fmt.Printf("\n%s: %s\n", keigostring, userinput)
     }
@@ -107,6 +110,8 @@ func main() {
     // create kanji ops blank pointer
     kanjiOps := &KanjiReadings{}
 
+    keigoOps := &KeigoReadings{}
+
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
 
@@ -143,6 +148,7 @@ func main() {
                 return
             }
 
+            keigoOps.keigoMap = csvMap
 
             switch filePath {
                 case "./resources/KanjiFrequencyListOnyomi.csv":
@@ -160,9 +166,6 @@ func main() {
                 case "./resources/all_readings_string.csv":
                     // setting the csvmap directly into the KanjiReadings map
                     kanjiOps.readings = csvMap
-
-                case "./resources/keigo_mapper.csv":
-                    kanjiOps.keigoMap = csvMap
             }
 
         }(filePath)
@@ -227,8 +230,8 @@ func main() {
                 }
             } else if applicationSelector == "2" {
                 fmt.Println("IS REACHING 1 Option")
-                if kanjiOps.keigoMap != nil {
-                    kanjiOps.printmapkeigo(userInput)
+                if keigoOps.keigoMap != nil {
+                    keigoOps.printmapkeigo(userInput)
                 }
             }
             fmt.Println("Press Enter to continue...")
