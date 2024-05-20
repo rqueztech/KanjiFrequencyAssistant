@@ -41,6 +41,15 @@ type KanjiReadings struct {
     regex *regexp.Regexp
 }
 
+func (kanjiops* KanjiReadings) printmapkeigo(userinput string) {
+    if kanjiops.keigoMap[userinput] != nil {
+        keigostring := string(kanjiops.keigoMap[userinput])
+        keigostring = strings.ReplaceAll(keigostring, "*", "\n")
+        fmt.Printf("\n%s: %s\n", keigostring, userinput)
+    }
+}
+
+
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
 
@@ -93,7 +102,6 @@ func handleError(err error, message string) {
     }
 }
 
-
 // Main function
 func main() {
     // create kanji ops blank pointer
@@ -122,7 +130,7 @@ func main() {
 
     wg.Add(lenFiles)
 
-    // Iterate through all four
+    // Iterate through all five
     for _, filePath := range filePaths {
         go func(filePath string) {
             defer wg.Done()
@@ -160,7 +168,7 @@ func main() {
         }(filePath)
     }
 
-    // Wait for all the go routines to finish, wait on all four files
+    // Wait for all the go routines to finish, wait on all five files
     defer wg.Wait()
 
     // Loop to keep the program running unless the user types in "exit"
@@ -170,18 +178,26 @@ func main() {
 
         scanner.Scan()
         applicationSelector := scanner.Text()
-
-        fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
-        fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
         
+        if applicationSelector == "1" {
+            clearScreen()
+            fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
+            fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
+        } else if applicationSelector == "2" {
+            clearScreen()
+            fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings")
+        }
+
+        scanner.Scan()
+        userInput := scanner.Text()
+
         if readings == true {
             fmt.Println("Reading data enabled...")
         } else {
             fmt.Println("Reading data silenced...")
         }
 
-        userInput := scanner.Text()
-
+        
         if userInput == "exit" {
             fmt.Println("Exiting the program...")
             break
@@ -193,6 +209,7 @@ func main() {
         }
 
         if applicationSelector == "1" {
+            fmt.Println("IS REACHING 1 Option")
             // Send each string into the printMap
             if kanjiOps.onyomiMap != nil {
                 kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
@@ -206,8 +223,9 @@ func main() {
                 kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
             }
         } else if applicationSelector == "2" {
+            fmt.Println("IS REACHING 1 Option")
             if kanjiOps.keigoMap != nil {
-                fmt.Println(kanjiOps.keigoMap)
+                kanjiOps.printmapkeigo(userInput)
             }
         }
         
