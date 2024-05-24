@@ -52,26 +52,28 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
-func (kanjiOps* KanjiReadings) frequencyAnalysis() map[string]int {
+func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) map[string]int {
     frequencyMap := make(map[string]int)
 
     hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
 
-    for key, value := range kanjiOps.onyomiMap {
-        if hiraganaPattern.MatchString(key) {
-            frequencyMap[key] = len(value)
+    if specifymap == "onyomi" {
+        for key, value := range kanjiOps.onyomiMap {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
         }
-    }
-
-    for key, value := range kanjiOps.kunyomiMap {
-        if hiraganaPattern.MatchString(key) {
-            frequencyMap[key] = len(value)
+    } else if specifymap == "kunyomi" {
+        for key, value := range kanjiOps.kunyomiMap {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
         }
-    }
-
-    for key, value := range kanjiOps.kunyomiWithHiragana {
-        if hiraganaPattern.MatchString(key) {
-            frequencyMap[key] = len(value)
+    } else if specifymap == "kunyomiwithhiragana" {
+        for key, value := range kanjiOps.kunyomiWithHiragana {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
         }
     }
 
