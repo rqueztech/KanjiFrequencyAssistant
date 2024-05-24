@@ -52,34 +52,6 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
-func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) map[string]int {
-    frequencyMap := make(map[string]int)
-
-    hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
-
-    if specifymap == "onyomi" {
-        for key, value := range kanjiOps.onyomiMap {
-            if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
-            }
-        }
-    } else if specifymap == "kunyomi" {
-        for key, value := range kanjiOps.kunyomiMap {
-            if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
-            }
-        }
-    } else if specifymap == "kunyomiwithhiragana" {
-        for key, value := range kanjiOps.kunyomiWithHiragana {
-            if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
-            }
-        }
-    }
-
-    return frequencyMap
-} 
-
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
 
@@ -207,7 +179,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Frequency Count\n4. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Exit\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -249,34 +221,24 @@ func main() {
                 continue
             }
 
-            frequencymap := make(string[]int)
-
             if applicationSelector == "1" {
                 // Send each string into the printMap
                 if kanjiOps.onyomiMap != nil {
-                    kanjiOps.printMap("Onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
+                    kanjiOps.printMap("onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
                 }
 
                 if kanjiOps.kunyomiMap != nil {
-                    kanjiOps.printMap("Kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
+                    kanjiOps.printMap("kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
                 }
 
                 if kanjiOps.kunyomiWithHiragana != nil {
-                    kanjiOps.printMap("Kunyomi with Hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+                    kanjiOps.printMap("kunyomi with hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
                 }
             } else if applicationSelector == "2" {
                 if keigoOps.keigoMap != nil {
                     keigoOps.printmapkeigo(userInput)
                 }
-            } else if applicationSelector == "3" {
-                frequencymap := kanjiOps.frequencyAnalysis("onyomi")
-                fmt.Println(frequencymap)
-            } else if applicationSelector == "4" {
-                frequencymap := kanjiOps.frequencyAnalysis("kunyomi")
-            } else if applicationSelector == "5" {
-                frequencymap := kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
-            }
-
+            } 
             fmt.Println("Press Enter to continue...")
             fmt.Scanln()
         }
