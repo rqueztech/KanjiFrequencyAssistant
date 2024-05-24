@@ -52,6 +52,31 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
+func (kanjiOps* KanjiReadings) frequencyAnalysis() map[string]int {
+    frequencyMap := make(map[string]int)
+
+    hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
+
+    for key, value := range kanjiOps.onyomiMap {
+        if hiraganaPattern.MatchString(key) {
+            frequencyMap[key] = len(value)
+        }
+    }
+
+    for key, value := range kanjiOps.kunyomiMap {
+        if hiraganaPattern.MatchString(key) {
+            frequencyMap[key] = len(value)
+        }
+    }
+
+    for key, value := range kanjiOps.kunyomiWithHiragana {
+        if hiraganaPattern.MatchString(key) {
+            frequencyMap[key] = len(value)
+        }
+    }
+
+    return frequencyMap
+} 
 
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
@@ -109,7 +134,6 @@ func handleError(err error, message string) {
 func main() {
     // create kanji ops blank pointer
     kanjiOps := &KanjiReadings{}
-
     keigoOps := &KeigoReadings{}
 
 
@@ -174,12 +198,14 @@ func main() {
     }
 
     // Wait for all the go routines to finish, wait on all five files
-    defer wg.Wait()
+    wg.Wait()
+
+    // now back in sequential mode, we can 
 
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Frequency Count\n4. Exit\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -238,6 +264,9 @@ func main() {
                 if keigoOps.keigoMap != nil {
                     keigoOps.printmapkeigo(userInput)
                 }
+            } else if applicationSelector == "3" {
+                frequencyString := kanjiOps.frequencyAnalysis()
+                fmt.Println(frequencyString)
             }
             fmt.Println("Press Enter to continue...")
             fmt.Scanln()
