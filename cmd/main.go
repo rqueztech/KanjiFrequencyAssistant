@@ -267,9 +267,14 @@ func main() {
                     keigoOps.printmapkeigo(userInput)
                 }
             } else if applicationSelector == "3" {
-                frequencyString := kanjiOps.frequencyAnalysis()
+                frequencyString := kanjiOps.frequencyAnalysis("onyomi")
                 fmt.Println(frequencyString)
+            } else if applicationSelector == "4" {
+                frequencyString := kanjiOps.frequencyAnalysis("kunyomi")
+            } else if applicationSelector == "5" {
+                frequencyString := kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
             }
+
             fmt.Println("Press Enter to continue...")
             fmt.Scanln()
         }
