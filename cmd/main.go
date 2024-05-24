@@ -52,6 +52,34 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
+func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) map[string]int {
+    frequencyMap := make(map[string]int)
+
+    hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
+
+    if specifymap == "onyomi" {
+        for key, value := range kanjiOps.onyomiMap {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
+        }
+    } else if specifymap == "kunyomi" {
+        for key, value := range kanjiOps.kunyomiMap {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
+        }
+    } else if specifymap == "kunyomiwithhiragana" {
+        for key, value := range kanjiOps.kunyomiWithHiragana {
+            if hiraganaPattern.MatchString(key) {
+                frequencyMap[key] = len(value)
+            }
+        }
+    }
+
+    return frequencyMap
+} 
+
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
 
@@ -179,7 +207,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         clearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Exit\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -238,9 +266,17 @@ func main() {
                 if keigoOps.keigoMap != nil {
                     keigoOps.printmapkeigo(userInput)
                 }
-            } 
+            } else if applicationSelector == "3" {
+                fmt.Println(kanjiOps.frequencyAnalysis("onyomi"))
+            } else if applicationSelector == "4" {
+                fmt.Println(kanjiOps.frequencyAnalysis("kunyomi"))
+            } else if applicationSelector == "5" {
+                fmt.Println(kanjiOps.frequencyAnalysis("kunyomiwithhiragana"))
+            }
+
             fmt.Println("Press Enter to continue...")
             fmt.Scanln()
         }
     }
 }
+
