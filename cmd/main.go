@@ -249,6 +249,8 @@ func main() {
                 continue
             }
 
+            frequencymap := make(string[]int)
+
             if applicationSelector == "1" {
                 // Send each string into the printMap
                 if kanjiOps.onyomiMap != nil {
@@ -267,12 +269,12 @@ func main() {
                     keigoOps.printmapkeigo(userInput)
                 }
             } else if applicationSelector == "3" {
-                frequencyString := kanjiOps.frequencyAnalysis("onyomi")
-                fmt.Println(frequencyString)
+                frequencymap := kanjiOps.frequencyAnalysis("onyomi")
+                fmt.Println(frequencymap)
             } else if applicationSelector == "4" {
-                frequencyString := kanjiOps.frequencyAnalysis("kunyomi")
+                frequencymap := kanjiOps.frequencyAnalysis("kunyomi")
             } else if applicationSelector == "5" {
-                frequencyString := kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
+                frequencymap := kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
             }
 
             fmt.Println("Press Enter to continue...")
