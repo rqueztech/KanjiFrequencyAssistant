@@ -42,6 +42,8 @@ type KanjiReadings struct {
 
 type KeigoReadings struct {
     keigoMap map[string][]rune
+    keigoSlice []string
+    regex * regexp.Regexp
 }
 
 func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
@@ -223,10 +225,15 @@ func main() {
                 clearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
 
-                for key, _ := range keigoOps.keigoMap {
-                    fmt.Printf("%s, ", key)
+                for key, _ := range keigoOps.keigoMap { 
+                    romajipattern := regexp.MustCompile(`[A-Za-z]`)
+
+                    if romajipattern.MatchString(key) {
+                        keigoOps.keigoSlice = append(keigoOps.keigoSlice, key)
+                    }
                 }
-                    
+
+                fmt.Println(keigoOps.keigoSlice)
             }
 
             scanner.Scan()
