@@ -41,6 +41,7 @@ type KanjiReadings struct {
 }
 
 type KeigoReadings struct {
+    alreadyRead bool
     keigoMap map[string][]rune
     keigoSlice []string
     regex * regexp.Regexp
@@ -138,8 +139,9 @@ func handleError(err error, message string) {
 func main() {
     // create kanji ops blank pointer
     kanjiOps := &KanjiReadings{}
-    keigoOps := &KeigoReadings{}
-
+    keigoOps := &KeigoReadings{
+        alreadyRead: false,
+    }
 
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
@@ -225,13 +227,17 @@ func main() {
                 clearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
 
-                for key, _ := range keigoOps.keigoMap { 
-                    romajipattern := regexp.MustCompile(`[A-Za-z]`)
+                if keigoOps.alreadyRead == false {
+                    for key, _ := range keigoOps.keigoMap { 
+                        romajipattern := regexp.MustCompile(`[A-Za-z]`)
 
-                    if romajipattern.MatchString(key) {
-                        keigoOps.keigoSlice = append(keigoOps.keigoSlice, key)
+                        if romajipattern.MatchString(key) {
+                            keigoOps.keigoSlice = append(keigoOps.keigoSlice, key)
+                        }
                     }
                 }
+
+                keigoOps.alreadyRead = true
 
                 fmt.Println(keigoOps.keigoSlice)
             }
