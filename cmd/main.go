@@ -9,6 +9,7 @@ import (
     "os/exec"
     "regexp"
     "runtime"
+    "sort"
     "strings"
     "sync"
 )
@@ -236,6 +237,8 @@ func main() {
                         }
                     }
                 }
+
+                sort.Strings(keigoOps.keigoSlice)
 
                 keigoOps.alreadyRead = true
 
