@@ -45,6 +45,7 @@ type KeigoReadings struct {
     alreadyRead bool
     keigoMap map[string][]rune
     keigoenglishslice []string
+    keigoromajislice []string
     regex * regexp.Regexp
 }
 
@@ -241,19 +242,24 @@ func main() {
 
                 if keigoOps.alreadyRead == false {
                     for key, _ := range keigoOps.keigoMap { 
-                        romajipattern := regexp.MustCompile(`^[A-Za-z]+-$`)
+                        englishpattern := regexp.MustCompile(`^[A-Za-z]+-$`)
+                        romajipattern := regexp.MustCompile(`^[A-Za-z]+`)
 
-                        if romajipattern.MatchString(key) {
+                        if englishpattern.MatchString(key) {
                             keigoOps.keigoenglishslice = append(keigoOps.keigoenglishslice, key[:len(key)-1])
+                        } else if romajipattern.MatchString(key) {
+                            keigoOps.keigoromajislice = append(keigoOps.keigoromajislice, key)
                         }
                     }
                 }
 
                 sort.Strings(keigoOps.keigoenglishslice)
+                sort.Strings(keigoOps.keigoromajislice)
 
                 keigoOps.alreadyRead = true
 
                 fmt.Println(keigoOps.keigoenglishslice)
+                fmt.Println(keigoOps.keigoromajislice)
             }
 
             scanner.Scan()
