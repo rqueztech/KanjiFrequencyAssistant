@@ -44,15 +44,26 @@ type KanjiReadings struct {
 type KeigoReadings struct {
     alreadyRead bool
     keigoMap map[string][]rune
-    keigoSlice []string
+    keigoenglishslice []string
     regex * regexp.Regexp
 }
 
 func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
+    fmt.Println(userinput)
+    scanner := bufio.NewScanner(os.Stdin)
+    fmt.Println(scanner.Text())
+    userintputdashed := userinput + "-"
+
     if keigoOps.keigoMap[userinput] != nil {
         keigostring := string(keigoOps.keigoMap[userinput])
         keigostring = strings.ReplaceAll(keigostring, "*", "\n")
         fmt.Printf("\n%s: %s\n", keigostring, userinput)
+    } else if keigoOps.keigoMap[userintputdashed] != nil {
+        keigostring := string(keigoOps.keigoMap[userintputdashed])
+        keigostring = strings.ReplaceAll(keigostring, "*", "\n")
+        fmt.Printf("\n%s: %s\n", keigostring, userinput)
+    } else {
+        fmt.Printf("\n%s: DOES NOT EXIST\n", userinput)
     }
 }
 
@@ -230,19 +241,19 @@ func main() {
 
                 if keigoOps.alreadyRead == false {
                     for key, _ := range keigoOps.keigoMap { 
-                        romajipattern := regexp.MustCompile(`[A-Za-z]`)
+                        romajipattern := regexp.MustCompile(`^[A-Za-z]+-$`)
 
                         if romajipattern.MatchString(key) {
-                            keigoOps.keigoSlice = append(keigoOps.keigoSlice, key)
+                            keigoOps.keigoenglishslice = append(keigoOps.keigoenglishslice, key[:len(key)-1])
                         }
                     }
                 }
 
-                sort.Strings(keigoOps.keigoSlice)
+                sort.Strings(keigoOps.keigoenglishslice)
 
                 keigoOps.alreadyRead = true
 
-                fmt.Println(keigoOps.keigoSlice)
+                fmt.Println(keigoOps.keigoenglishslice)
             }
 
             scanner.Scan()
