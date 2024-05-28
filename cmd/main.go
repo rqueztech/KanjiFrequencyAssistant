@@ -46,6 +46,7 @@ type KeigoReadings struct {
     keigoMap map[string][]rune
     keigoenglishslice []string
     keigoromajislice []string
+    keigojapaneseslice []string
     regex * regexp.Regexp
 }
 
@@ -249,6 +250,8 @@ func main() {
                             keigoOps.keigoenglishslice = append(keigoOps.keigoenglishslice, key[:len(key)-1])
                         } else if romajipattern.MatchString(key) {
                             keigoOps.keigoromajislice = append(keigoOps.keigoromajislice, key)
+                        } else {
+                            keigoOps.keigojapaneseslice = append(keigoOps.keigojapaneseslice, key)
                         }
                     }
                 }
@@ -260,6 +263,7 @@ func main() {
 
                 fmt.Println(keigoOps.keigoenglishslice)
                 fmt.Println(keigoOps.keigoromajislice)
+                fmt.Println(keigoOps.keigojapaneseslice)
             }
 
             scanner.Scan()
