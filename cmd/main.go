@@ -242,8 +242,8 @@ func main() {
 
                 if keigoOps.alreadyRead == false {
                     for key, _ := range keigoOps.keigoMap { 
-                        englishpattern := regexp.MustCompile(`^[A-Za-z]+-$`)
-                        romajipattern := regexp.MustCompile(`^[A-Za-z]+`)
+                        englishpattern := regexp.MustCompile(`^[A-Za-z ]+\-$`)
+                        romajipattern := regexp.MustCompile(`^[A-Za-z ]+$`)
 
                         if englishpattern.MatchString(key) {
                             keigoOps.keigoenglishslice = append(keigoOps.keigoenglishslice, key[:len(key)-1])
