@@ -237,6 +237,12 @@ func main() {
                 clearScreen()
                 fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
                 fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
+                
+                if readings == true {
+                    fmt.Println("Reading data enabled...")
+                } else {
+                    fmt.Println("Reading data silenced...")
+                }
             } else if applicationSelector == "2" {
                 clearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
@@ -269,11 +275,6 @@ func main() {
             scanner.Scan()
             userInput = scanner.Text()
 
-            if readings == true {
-                fmt.Println("Reading data enabled...")
-            } else {
-                fmt.Println("Reading data silenced...")
-            }
 
             
             if userInput == "exit" {
