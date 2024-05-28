@@ -117,7 +117,6 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
             meaningString := string(kanjiOps.kanjiMeanings[currentKanji])
 
             if readings == true {
-                kanjiOps.WriteString("\nLink: ")
                 kanjiOps.WriteString(jishoBaseLink)
                 kanjiOps.WriteString(string(escaped))
                 kanjiOps.WriteString("%20%23kanji")
@@ -125,16 +124,27 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
                 kanjilink := kanjiOps.String()
                 linkOutput := strings.ReplaceAll(kanjilink, "\\n", "\n")
                 kanjiOps.Reset()
-                    fmt.Printf("\n%s (%s): %s -> %s %s\n", kanjiString, userInput, meaningString, readingString, linkOutput)
-                } else {
-                    kanjiOps.WriteString(jishoBaseLink)
-                    kanjiOps.WriteString(string(escaped))
-                    kanjiOps.WriteString("%20%23kanji")
+                fmt.Printf("\n\nKanji link: %s (%s): %s -> %s %s\n", kanjiString, userInput, meaningString, readingString, linkOutput)
 
-                    linkOutput := kanjiOps.String()
-                    fmt.Printf("\n%s (%s): %s -> %s", kanjiString, userInput, meaningString, linkOutput)
-                    kanjiOps.Reset()
-                }
+                escaped = url.QueryEscape("*" + kanjiString + "*")
+                kanjiOps.WriteString(jishoBaseLink)
+                kanjiOps.WriteString(string(escaped))
+                kanjiOps.WriteString("%20%23common")
+
+                commonwordlink := kanjiOps.String()
+                linkOutput = strings.ReplaceAll(commonwordlink, "\\n", "\n")
+                kanjiOps.Reset()
+                fmt.Printf("Words Link: %s\n", commonwordlink)
+
+            } else {
+                kanjiOps.WriteString(jishoBaseLink)
+                kanjiOps.WriteString(string(escaped))
+                kanjiOps.WriteString("%20%23kanji")
+
+                linkOutput := kanjiOps.String()
+                fmt.Printf("\n%s (%s): %s -> %s", kanjiString, userInput, meaningString, linkOutput)
+                kanjiOps.Reset()
+            }
         } 
 
         fmt.Printf("\nNumber of [[%s]] readings --> : %d\n", userInput, len(map_result))
