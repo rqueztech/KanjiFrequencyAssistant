@@ -37,6 +37,7 @@ func clearScreen() {
 type KanjiReadings struct {
     sync.Mutex
     onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings map[string][]rune
+    onyomifrequencyslice, kunyomifrequencyslice, kunyomiwithhiraganafrequencyslice [][]string
     strings.Builder
     regex *regexp.Regexp
 }
@@ -69,57 +70,44 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
-func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) {
-    counterslice := make([][]string, 80)
+
+func (kanjiOps* KanjiReadings) loadfrequencies() {
+    kanjiOps.onyomifrequencyslice = make([][]string, 80)
+    kanjiOps.kunyomifrequencyslice = make([][]string, 30)
+    kanjiOps.kunyomiwithhiraganafrequencyslice = make([][]string, 25)
 
     hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
 
-    if specifymap == "onyomi" {
-        for key, value := range kanjiOps.onyomiMap {
+    for key, value := range kanjiOps.onyomiMap {
 
-            currentreadfrequency := len(value)
+        currentreadfrequency := len(value)
 
-            if hiraganaPattern.MatchString(key) {
-                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
-            }
-
-        }
-    } else if specifymap == "kunyomi" {
-        for key, value := range kanjiOps.kunyomiMap {
-
-            currentreadfrequency := len(value)
-
-            if hiraganaPattern.MatchString(key) {
-                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
-            }
-
+        if hiraganaPattern.MatchString(key) {
+            kanjiOps.onyomifrequencyslice[currentreadfrequency] = append(kanjiOps.onyomifrequencyslice[currentreadfrequency], key)
         }
 
+    }
+    
+    for key, value := range kanjiOps.kunyomiMap {
 
-    } else if specifymap == "kunyomiwithhiragana" {
-        for key, value := range kanjiOps.kunyomiWithHiragana {
+        currentreadfrequency := len(value)
 
-            currentreadfrequency := len(value)
+        if hiraganaPattern.MatchString(key) {
+            kanjiOps.kunyomifrequencyslice[currentreadfrequency] = append(kanjiOps.kunyomifrequencyslice[currentreadfrequency], key)
+        }
 
-            if hiraganaPattern.MatchString(key) {
-                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
-            }
+    }
+    for key, value := range kanjiOps.kunyomiWithHiragana {
 
+        currentreadfrequency := len(value)
 
-
+        if hiraganaPattern.MatchString(key) {
+            kanjiOps.kunyomiwithhiraganafrequencyslice[currentreadfrequency] = append(kanjiOps.kunyomiwithhiraganafrequencyslice[currentreadfrequency], key)
         }
     }
+}
 
 
-    for x := len(counterslice) - 1; x >= 0; x-- {
-        if counterslice[x] != nil {
-            fmt.Println(x, counterslice[x])
-        }
-    }
-
-
-
-} 
 
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
     // Print out the name of the function
@@ -173,6 +161,33 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
 
         fmt.Printf("\nNumber of [[%s]] readings --> : %d\n", userInput, len(map_result))
     }
+}
+
+func (kanjiOps* KanjiReadings) frequencyAnalysis(userinput string) {
+    clearScreen()
+
+    if userinput == "onyomi" {
+        fmt.Println("Onyomi Frequency Report: ")
+        for i := len(kanjiOps.onyomifrequencyslice) - 1; i >= 0; i-- {
+            if kanjiOps.onyomifrequencyslice[i] != nil{
+                fmt.Println(i, kanjiOps.onyomifrequencyslice[i])
+            }
+        }
+    } else if userinput == "kunyomi" {
+        fmt.Println("Kunyomi Frequency Report: ")
+        for i := len(kanjiOps.kunyomifrequencyslice) - 1; i >= 0; i-- {
+            if kanjiOps.kunyomifrequencyslice[i] != nil{
+                fmt.Println(i, kanjiOps.kunyomifrequencyslice[i])
+            }
+        }
+    } else if userinput == "kunyomiwithhiragana" {
+        fmt.Println("Kunyomi with Hiragana Frequency Report: ")
+        for i := len(kanjiOps.kunyomiwithhiraganafrequencyslice) - 1; i >= 0; i-- {
+            if kanjiOps.kunyomiwithhiraganafrequencyslice[i] != nil{
+                fmt.Println(i, kanjiOps.kunyomiwithhiraganafrequencyslice[i])
+            }
+        }
+    }   
 }
 
 // create function to handle error
@@ -251,6 +266,9 @@ func main() {
 
     // Wait for all the go routines to finish, wait on all five files
     wg.Wait()
+
+    kanjiOps.loadfrequencies()
+
 
     // now back in sequential mode, we can 
 
