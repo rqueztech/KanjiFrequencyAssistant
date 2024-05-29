@@ -69,32 +69,65 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
     }
 }
 
-func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) map[string]int {
-    frequencyMap := make(map[string]int)
+func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) {
+    counterslice := make([][]string, 80)
 
     hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
 
     if specifymap == "onyomi" {
         for key, value := range kanjiOps.onyomiMap {
+
+            currentreadfrequency := len(value)
+
             if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
+                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
+            }
+
+            for x := len(counterslice) - 1; x >= 0; x-- {
+                if counterslice[x] != nil {
+                    fmt.Println(x, counterslice[x])
+                }
             }
         }
     } else if specifymap == "kunyomi" {
         for key, value := range kanjiOps.kunyomiMap {
+
+            currentreadfrequency := len(value)
+
             if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
+                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
             }
+
+            for x := len(counterslice) - 1; x >= 0; x-- {
+                if counterslice[x] != nil {
+                    fmt.Println(x, counterslice[x])
+                }
+            }
+
+
         }
+
+
     } else if specifymap == "kunyomiwithhiragana" {
         for key, value := range kanjiOps.kunyomiWithHiragana {
+
+            currentreadfrequency := len(value)
+
             if hiraganaPattern.MatchString(key) {
-                frequencyMap[key] = len(value)
+                counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
             }
+
+            for x := len(counterslice) - 1; x >= 0; x-- {
+                if counterslice[x] != nil {
+                    fmt.Println(x, counterslice[x])
+                }
+            }
+
+
         }
     }
 
-    return frequencyMap
+
 } 
 
 func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
@@ -316,13 +349,13 @@ func main() {
                     keigoOps.printmapkeigo(userInput)
                 }
             } else if applicationSelector == "3" {
-                fmt.Println(kanjiOps.frequencyAnalysis("onyomi"))
+                kanjiOps.frequencyAnalysis("onyomi")
                 userInput = "exit"
             } else if applicationSelector == "4" {
-                fmt.Println(kanjiOps.frequencyAnalysis("kunyomi"))
+                kanjiOps.frequencyAnalysis("kunyomi")
                 userInput = "exit"
             } else if applicationSelector == "5" {
-                fmt.Println(kanjiOps.frequencyAnalysis("kunyomiwithhiragana"))
+                kanjiOps.frequencyAnalysis("kunyomi with hiragana")
                 userInput = "exit"
             } 
             fmt.Println("Press Enter to continue...")
