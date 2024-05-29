@@ -83,11 +83,6 @@ func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) {
                 counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
             }
 
-            for x := len(counterslice) - 1; x >= 0; x-- {
-                if counterslice[x] != nil {
-                    fmt.Println(x, counterslice[x])
-                }
-            }
         }
     } else if specifymap == "kunyomi" {
         for key, value := range kanjiOps.kunyomiMap {
@@ -97,13 +92,6 @@ func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) {
             if hiraganaPattern.MatchString(key) {
                 counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
             }
-
-            for x := len(counterslice) - 1; x >= 0; x-- {
-                if counterslice[x] != nil {
-                    fmt.Println(x, counterslice[x])
-                }
-            }
-
 
         }
 
@@ -117,15 +105,18 @@ func (kanjiOps* KanjiReadings) frequencyAnalysis(specifymap string) {
                 counterslice[currentreadfrequency] = append(counterslice[currentreadfrequency], key)
             }
 
-            for x := len(counterslice) - 1; x >= 0; x-- {
-                if counterslice[x] != nil {
-                    fmt.Println(x, counterslice[x])
-                }
-            }
 
 
         }
     }
+
+
+    for x := len(counterslice) - 1; x >= 0; x-- {
+        if counterslice[x] != nil {
+            fmt.Println(x, counterslice[x])
+        }
+    }
+
 
 
 } 
@@ -311,7 +302,7 @@ func main() {
                 }
 
                 if kanjiOps.kunyomiWithHiragana != nil {
-                    kanjiOps.printMap("kunyomi with hiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+                    kanjiOps.printMap("kunyomiwithhiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
                 }
 
             } else if applicationSelector == "2" {
@@ -355,7 +346,7 @@ func main() {
                 kanjiOps.frequencyAnalysis("kunyomi")
                 userInput = "exit"
             } else if applicationSelector == "5" {
-                kanjiOps.frequencyAnalysis("kunyomi with hiragana")
+                kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
                 userInput = "exit"
             } 
             fmt.Println("Press Enter to continue...")
