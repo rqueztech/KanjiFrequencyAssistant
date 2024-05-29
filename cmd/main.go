@@ -136,7 +136,7 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
                 kanjilink := kanjiOps.String()
                 linkOutput := strings.ReplaceAll(kanjilink, "\\n", "\n")
                 kanjiOps.Reset()
-                fmt.Printf("\n\nKanji link: %s (%s): %s -> %s %s\n", kanjiString, userInput, meaningString, readingString, linkOutput)
+                fmt.Printf("\n\n%s (%s): %s -> %s\nKanji Link: %s", kanjiString, userInput, meaningString, readingString, linkOutput)
 
                 escaped = url.QueryEscape("*" + kanjiString + "*")
                 kanjiOps.WriteString(jishoBaseLink)
@@ -146,7 +146,7 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
                 commonwordlink := kanjiOps.String()
                 linkOutput = strings.ReplaceAll(commonwordlink, "\\n", "\n")
                 kanjiOps.Reset()
-                fmt.Printf("Words Link: %s\n", commonwordlink)
+                fmt.Println("Words Link: %s\n", commonwordlink)
 
             } else {
                 kanjiOps.WriteString(jishoBaseLink)
