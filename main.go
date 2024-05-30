@@ -6,40 +6,37 @@ import (
     "fmt" // import the fmt package for printing
     "net/url"
     "os"
-    "os/exec"
+    "KanjiFrequencyHelper/csvoperations"
+    "KanjiFrequencyHelper/utils"
     "regexp"
-    "runtime"
     "sort"
     "strings"
     "sync"
 )
 
-// Read the from the os/exec package and create custom clearscreen
-func clearScreen() {
-    // Create a pointer to the exec.Cmd struct, which is used to build the command to be used.
-    var cmd *exec.Cmd
-
-    // Check the runtime of the OS and create the command accordingly
-    if runtime.GOOS == "windows" {
-        cmd = exec.Command("cmd", "/c", "cls")
-    } else {
-        cmd = exec.Command("clear")
-    }
-
-    // Set the Stdout to the os.Stdout
-    cmd.Stdout = os.Stdout
-
-    // Run the command that was created
-    cmd.Run()
-}
-
 // Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
 type KanjiReadings struct {
-    sync.Mutex
-    onyomiMap, kunyomiMap, kunyomiWithHiragana, kanjiMeanings, readings map[string][]rune
-    onyomifrequencyslice, kunyomifrequencyslice, kunyomiwithhiraganafrequencyslice [][]string
+    onyomiMap map[string][]rune
+    kunyomiMap map[string][]rune
+    kunyomiWithHiragana map[string][]rune
+    kanjiMeanings map[string][]rune
+    readings map[string][]rune
+
+    onyomifrequencyslice  [][]string
+    kunyomifrequencyslice [][]string
+    kunyomiwithhiraganafrequencyslice [][]string
+
     strings.Builder
     regex *regexp.Regexp
+    mu sync.Mutex
+}
+
+func (kr *KanjiReadings) Lock() {
+    kr.mu.Lock()
+}
+
+func (kr *KanjiReadings) Unlock() {
+    kr.mu.Unlock()
 }
 
 type KeigoReadings struct {
@@ -164,7 +161,7 @@ func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInp
 }
 
 func (kanjiOps* KanjiReadings) frequencyAnalysis(userinput string) {
-    clearScreen()
+    utils.ClearScreen()
 
     if userinput == "onyomi" {
         fmt.Println("Onyomi Frequency Report: ")
@@ -233,7 +230,7 @@ func main() {
             defer wg.Done()
             kanjiOps.Lock()
             defer kanjiOps.Unlock()
-            csvMap, err := ReadCSV(filePath)
+            csvMap, err := csvoperations.ReadCSV(filePath)
             
             if err != nil {
                 handleError(err, "Error with file path: " + filePath)
@@ -274,7 +271,7 @@ func main() {
 
     // Loop to keep the program running unless the user types in "exit"
     for {
-        clearScreen() 
+        utils.ClearScreen() 
         fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Exit\nEnter Input: ")
 
         scanner.Scan()
@@ -286,7 +283,7 @@ func main() {
 
         for userInput != "exit" {
             if applicationSelector == "1" {
-                clearScreen()
+                utils.ClearScreen()
                 // create a bool to track readings
                 
 
@@ -324,7 +321,7 @@ func main() {
                 }
 
             } else if applicationSelector == "2" {
-                clearScreen()
+                utils.ClearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
 
                 if keigoOps.alreadyRead == false {
