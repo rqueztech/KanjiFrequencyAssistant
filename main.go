@@ -4,40 +4,15 @@ package main
 import (
     "bufio" // import bufio to scan in user input
     "fmt" // import the fmt package for printing
-    "net/url"
     "os"
     "KanjiFrequencyHelper/csvoperations"
     "KanjiFrequencyHelper/utils"
+    "KanjiFrequencyHelper/kanji"
     "regexp"
     "sort"
     "strings"
     "sync"
 )
-
-// Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
-type KanjiReadings struct {
-    onyomiMap map[string][]rune
-    kunyomiMap map[string][]rune
-    kunyomiWithHiragana map[string][]rune
-    kanjiMeanings map[string][]rune
-    readings map[string][]rune
-
-    onyomifrequencyslice  [][]string
-    kunyomifrequencyslice [][]string
-    kunyomiwithhiraganafrequencyslice [][]string
-
-    strings.Builder
-    regex *regexp.Regexp
-    mu sync.Mutex
-}
-
-func (kr *KanjiReadings) Lock() {
-    kr.mu.Lock()
-}
-
-func (kr *KanjiReadings) Unlock() {
-    kr.mu.Unlock()
-}
 
 type KeigoReadings struct {
     alreadyRead bool
@@ -46,6 +21,10 @@ type KeigoReadings struct {
     keigoromajislice []string
     keigojapaneseslice []string
     regex * regexp.Regexp
+}
+
+type Builder struct {
+    strings.Builder
 }
 
 func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
@@ -68,125 +47,6 @@ func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
 }
 
 
-func (kanjiOps* KanjiReadings) loadfrequencies() {
-    kanjiOps.onyomifrequencyslice = make([][]string, 80)
-    kanjiOps.kunyomifrequencyslice = make([][]string, 30)
-    kanjiOps.kunyomiwithhiraganafrequencyslice = make([][]string, 25)
-
-    hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
-
-    for key, value := range kanjiOps.onyomiMap {
-
-        currentreadfrequency := len(value)
-
-        if hiraganaPattern.MatchString(key) {
-            kanjiOps.onyomifrequencyslice[currentreadfrequency] = append(kanjiOps.onyomifrequencyslice[currentreadfrequency], key)
-        }
-
-    }
-    
-    for key, value := range kanjiOps.kunyomiMap {
-
-        currentreadfrequency := len(value)
-
-        if hiraganaPattern.MatchString(key) {
-            kanjiOps.kunyomifrequencyslice[currentreadfrequency] = append(kanjiOps.kunyomifrequencyslice[currentreadfrequency], key)
-        }
-
-    }
-    for key, value := range kanjiOps.kunyomiWithHiragana {
-
-        currentreadfrequency := len(value)
-
-        if hiraganaPattern.MatchString(key) {
-            kanjiOps.kunyomiwithhiraganafrequencyslice[currentreadfrequency] = append(kanjiOps.kunyomiwithhiraganafrequencyslice[currentreadfrequency], key)
-        }
-    }
-}
-
-
-
-func (kanjiOps* KanjiReadings) printMap(title string, map_result []rune, userInput string, readings bool) {
-    // Print out the name of the function
-
-    // Jisho link string baseline
-    jishoBaseLink := "https://www.jisho.org/search/"
-    
-    if map_result != nil {
-        fmt.Printf("============ %s ================", title)
-
-        // Check if the value exists in the map, if not prints out DOES NOT EXIST
-        for _, currentKanjiRune := range(map_result) {
-            kanjiString := string(currentKanjiRune)
-            escaped:= url.QueryEscape(kanjiString)
-
-            currentKanji := string(currentKanjiRune)
-            readingString := string(kanjiOps.readings[currentKanji])
-            readingString = strings.ReplaceAll(readingString, "\\n", "\n")
-            meaningString := string(kanjiOps.kanjiMeanings[currentKanji])
-
-            if readings == true {
-                kanjiOps.WriteString(jishoBaseLink)
-                kanjiOps.WriteString(string(escaped))
-                kanjiOps.WriteString("%20%23kanji")
-
-                kanjilink := kanjiOps.String()
-                linkOutput := strings.ReplaceAll(kanjilink, "\\n", "\n")
-                kanjiOps.Reset()
-                fmt.Printf("\n\n%s (%s): %s -> %s\nKanji Link: %s", kanjiString, userInput, meaningString, readingString, linkOutput)
-
-                escaped = url.QueryEscape("*" + kanjiString + "*")
-                kanjiOps.WriteString(jishoBaseLink)
-                kanjiOps.WriteString(string(escaped))
-                kanjiOps.WriteString("%20%23common")
-
-                commonwordlink := kanjiOps.String()
-                linkOutput = strings.ReplaceAll(commonwordlink, "\\n", "\n")
-                kanjiOps.Reset()
-                fmt.Println("Words Link: %s\n", commonwordlink)
-
-            } else {
-                kanjiOps.WriteString(jishoBaseLink)
-                kanjiOps.WriteString(string(escaped))
-                kanjiOps.WriteString("%20%23kanji")
-
-                linkOutput := kanjiOps.String()
-                fmt.Printf("\n%s (%s): %s -> %s", kanjiString, userInput, meaningString, linkOutput)
-                kanjiOps.Reset()
-            }
-        } 
-
-        fmt.Printf("\nNumber of [[%s]] readings --> : %d\n", userInput, len(map_result))
-    }
-}
-
-func (kanjiOps* KanjiReadings) frequencyAnalysis(userinput string) {
-    utils.ClearScreen()
-
-    if userinput == "onyomi" {
-        fmt.Println("Onyomi Frequency Report: ")
-        for i := len(kanjiOps.onyomifrequencyslice) - 1; i >= 0; i-- {
-            if kanjiOps.onyomifrequencyslice[i] != nil{
-                fmt.Println(i, kanjiOps.onyomifrequencyslice[i])
-            }
-        }
-    } else if userinput == "kunyomi" {
-        fmt.Println("Kunyomi Frequency Report: ")
-        for i := len(kanjiOps.kunyomifrequencyslice) - 1; i >= 0; i-- {
-            if kanjiOps.kunyomifrequencyslice[i] != nil{
-                fmt.Println(i, kanjiOps.kunyomifrequencyslice[i])
-            }
-        }
-    } else if userinput == "kunyomiwithhiragana" {
-        fmt.Println("Kunyomi with Hiragana Frequency Report: ")
-        for i := len(kanjiOps.kunyomiwithhiraganafrequencyslice) - 1; i >= 0; i-- {
-            if kanjiOps.kunyomiwithhiraganafrequencyslice[i] != nil{
-                fmt.Println(i, kanjiOps.kunyomiwithhiraganafrequencyslice[i])
-            }
-        }
-    }   
-}
-
 // create function to handle error
 func handleError(err error, message string) {
     if err != nil {
@@ -197,8 +57,9 @@ func handleError(err error, message string) {
 
 // Main function
 func main() {
+
     // create kanji ops blank pointer
-    kanjiOps := &KanjiReadings{}
+    kanjiOps := &kanji.KanjiReadings{}
     keigoOps := &KeigoReadings{
         alreadyRead: false,
     }
@@ -216,7 +77,7 @@ func main() {
         "./resources/KanjiFrequencyListKunyomi.csv",
         "./resources/KunyomiWithHiragana.csv",
         "./resources/KanjiMeanings.csv",
-        "./resources/all_readings_string.csv",
+        "./resources/all_Readings_string.csv",
         "./resources/keigo_mapper.csv",
     }
 
@@ -239,20 +100,20 @@ func main() {
 
             switch filePath {
                 case "./resources/KanjiFrequencyListOnyomi.csv":
-                    kanjiOps.onyomiMap = csvMap
+                    kanjiOps.OnyomiMap = csvMap
 
                 case "./resources/KanjiFrequencyListKunyomi.csv": 
-                    kanjiOps.kunyomiMap = csvMap
+                    kanjiOps.KunyomiMap = csvMap
 
                 case "./resources/KunyomiWithHiragana.csv":
-                    kanjiOps.kunyomiWithHiragana = csvMap
+                    kanjiOps.KunyomiWithHiragana = csvMap
 
                 case "./resources/KanjiMeanings.csv":
-                    kanjiOps.kanjiMeanings = csvMap
+                    kanjiOps.KanjiMeanings = csvMap
 
-                case "./resources/all_readings_string.csv":
-                    // setting the csvmap directly into the KanjiReadings map
-                    kanjiOps.readings = csvMap
+                case "./resources/all_Readings_string.csv":
+                    // setting the csvmap directly into the kanj.KanjiReadings map
+                    kanjiOps.Readings = csvMap
 
                 case "./resources/keigo_mapper.csv":
                     keigoOps.keigoMap = csvMap
@@ -264,8 +125,7 @@ func main() {
     // Wait for all the go routines to finish, wait on all five files
     wg.Wait()
 
-    kanjiOps.loadfrequencies()
-
+    kanjiOps.LoadFrequencies()
 
     // now back in sequential mode, we can 
 
@@ -279,18 +139,18 @@ func main() {
         
         userInput := ""
 
-        var readings bool = true
+        var Readings bool = true
 
         for userInput != "exit" {
             if applicationSelector == "1" {
                 utils.ClearScreen()
-                // create a bool to track readings
+                // create a bool to track Readings
                 
 
-                fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get readings")
-                fmt.Println("Enter Input: ('exit' to quit, 'readings' toggles verbosity: ")
+                fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get Readings")
+                fmt.Println("Enter Input: ('exit' to quit, 'Readings' toggles verbosity: ")
                 
-                if readings == true {
+                if Readings == true {
                     fmt.Println("Reading data enabled...")
                 } else {
                     fmt.Println("Reading data silenced...")
@@ -299,30 +159,30 @@ func main() {
                 scanner.Scan()
                 userInput = scanner.Text()
 
-                if userInput == "readings" {
-                    readings = !readings
+                if userInput == "Readings" {
+                    Readings = !Readings
                     fmt.Println("Reading data silenced...")
                     _ = bufio.NewScanner(os.Stdin)
                     continue
                 }
 
 
-                // Send each string into the printMap
-                if kanjiOps.onyomiMap != nil {
-                    kanjiOps.printMap("onyomi", kanjiOps.onyomiMap[userInput], userInput, readings)
+                // Send each string into the PrintMap
+                if kanjiOps.OnyomiMap != nil {
+                    kanjiOps.PrintMap("Onyomi", kanjiOps.OnyomiMap[userInput], userInput, Readings)
                 }
 
-                if kanjiOps.kunyomiMap != nil {
-                    kanjiOps.printMap("kunyomi", kanjiOps.kunyomiMap[userInput], userInput, readings)
+                if kanjiOps.KunyomiMap != nil {
+                    kanjiOps.PrintMap("Kunyomi", kanjiOps.KunyomiMap[userInput], userInput, Readings)
                 }
 
-                if kanjiOps.kunyomiWithHiragana != nil {
-                    kanjiOps.printMap("kunyomiwithhiragana", kanjiOps.kunyomiWithHiragana[userInput], userInput, readings)
+                if kanjiOps.KunyomiWithHiragana != nil {
+                    kanjiOps.PrintMap("Kunyomiwithhiragana", kanjiOps.KunyomiWithHiragana[userInput], userInput, Readings)
                 }
 
             } else if applicationSelector == "2" {
                 utils.ClearScreen()
-                fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo readings ('exit' to quit)")
+                fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo Readings ('exit' to quit)")
 
                 if keigoOps.alreadyRead == false {
                     for key, _ := range keigoOps.keigoMap { 
@@ -355,13 +215,13 @@ func main() {
                     keigoOps.printmapkeigo(userInput)
                 }
             } else if applicationSelector == "3" {
-                kanjiOps.frequencyAnalysis("onyomi")
+                kanjiOps.FrequencyAnalysis("Onyomi")
                 userInput = "exit"
             } else if applicationSelector == "4" {
-                kanjiOps.frequencyAnalysis("kunyomi")
+                kanjiOps.FrequencyAnalysis("Kunyomi")
                 userInput = "exit"
             } else if applicationSelector == "5" {
-                kanjiOps.frequencyAnalysis("kunyomiwithhiragana")
+                kanjiOps.FrequencyAnalysis("Kunyomiwithhiragana")
                 userInput = "exit"
             } 
             fmt.Println("Press Enter to continue...")
