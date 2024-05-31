@@ -8,60 +8,27 @@ import (
     "KanjiFrequencyHelper/csvoperations"
     "KanjiFrequencyHelper/utils"
     "KanjiFrequencyHelper/kanji"
+    "KanjiFrequencyHelper/keigo"
     "regexp"
     "sort"
     "strings"
     "sync"
 )
 
-type KeigoReadings struct {
-    alreadyRead bool
-    keigoMap map[string][]rune
-    keigoenglishslice []string
-    keigoromajislice []string
-    keigojapaneseslice []string
-    regex * regexp.Regexp
-}
+
 
 type Builder struct {
     strings.Builder
 }
 
-func (keigoOps* KeigoReadings) printmapkeigo(userinput string) {
-    fmt.Println(userinput)
-    scanner := bufio.NewScanner(os.Stdin)
-    fmt.Println(scanner.Text())
-    userintputdashed := userinput + "-"
-
-    if keigoOps.keigoMap[userinput] != nil {
-        keigostring := string(keigoOps.keigoMap[userinput])
-        keigostring = strings.ReplaceAll(keigostring, "*", "\n")
-        fmt.Printf("\n%s: %s\n", keigostring, userinput)
-    } else if keigoOps.keigoMap[userintputdashed] != nil {
-        keigostring := string(keigoOps.keigoMap[userintputdashed])
-        keigostring = strings.ReplaceAll(keigostring, "*", "\n")
-        fmt.Printf("\n%s: %s\n", keigostring, userinput)
-    } else {
-        fmt.Printf("\n%s: DOES NOT EXIST\n", userinput)
-    }
-}
-
-
-// create function to handle error
-func handleError(err error, message string) {
-    if err != nil {
-        fmt.Println("Error: ", message)
-        fmt.Println("Error: ", err)
-    }
-}
 
 // Main function
 func main() {
 
     // create kanji ops blank pointer
     kanjiOps := &kanji.KanjiReadings{}
-    keigoOps := &KeigoReadings{
-        alreadyRead: false,
+    keigoOps := &keigo.KeigoReadings{
+        AlreadyRead: false,
     }
 
     // Create a scanner used to read user input/options
@@ -94,7 +61,7 @@ func main() {
             csvMap, err := csvoperations.ReadCSV(filePath)
             
             if err != nil {
-                handleError(err, "Error with file path: " + filePath)
+                fmt.Println("File Not Found")
                 return
             }
 
@@ -116,7 +83,7 @@ func main() {
                     kanjiOps.Readings = csvMap
 
                 case "./resources/keigo_mapper.csv":
-                    keigoOps.keigoMap = csvMap
+                    keigoOps.KeigoMap = csvMap
             }
 
         }(filePath)
@@ -139,7 +106,6 @@ func main() {
         
         userInput := ""
 
-        var Readings bool = true
 
         for userInput != "exit" {
             if applicationSelector == "1" {
@@ -150,7 +116,7 @@ func main() {
                 fmt.Println("KANJI ASSISTANT: Enter (hiragana, romaji, or katakana to get Readings")
                 fmt.Println("Enter Input: ('exit' to quit, 'Readings' toggles verbosity: ")
                 
-                if Readings == true {
+                if kanjiOps.ShowReadings == true {
                     fmt.Println("Reading data enabled...")
                 } else {
                     fmt.Println("Reading data silenced...")
@@ -159,8 +125,8 @@ func main() {
                 scanner.Scan()
                 userInput = scanner.Text()
 
-                if userInput == "Readings" {
-                    Readings = !Readings
+                if userInput == "readings" {
+                    kanjiOps.ShowReadings = !kanjiOps.ShowReadings
                     fmt.Println("Reading data silenced...")
                     _ = bufio.NewScanner(os.Stdin)
                     continue
@@ -169,50 +135,50 @@ func main() {
 
                 // Send each string into the PrintMap
                 if kanjiOps.OnyomiMap != nil {
-                    kanjiOps.PrintMap("Onyomi", kanjiOps.OnyomiMap[userInput], userInput, Readings)
+                    kanjiOps.PrintMap("Onyomi", kanjiOps.OnyomiMap[userInput], userInput)
                 }
 
                 if kanjiOps.KunyomiMap != nil {
-                    kanjiOps.PrintMap("Kunyomi", kanjiOps.KunyomiMap[userInput], userInput, Readings)
+                    kanjiOps.PrintMap("Kunyomi", kanjiOps.KunyomiMap[userInput], userInput)
                 }
 
                 if kanjiOps.KunyomiWithHiragana != nil {
-                    kanjiOps.PrintMap("Kunyomiwithhiragana", kanjiOps.KunyomiWithHiragana[userInput], userInput, Readings)
+                    kanjiOps.PrintMap("Kunyomiwithhiragana", kanjiOps.KunyomiWithHiragana[userInput], userInput)
                 }
 
             } else if applicationSelector == "2" {
                 utils.ClearScreen()
                 fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo Readings ('exit' to quit)")
 
-                if keigoOps.alreadyRead == false {
-                    for key, _ := range keigoOps.keigoMap { 
+                if keigoOps.AlreadyRead == false {
+                    for key, _ := range keigoOps.KeigoMap { 
                         englishpattern := regexp.MustCompile(`^[A-Za-z ]+\-$`)
                         romajipattern := regexp.MustCompile(`^[A-Za-z ]+$`)
 
                         if englishpattern.MatchString(key) {
-                            keigoOps.keigoenglishslice = append(keigoOps.keigoenglishslice, key[:len(key)-1])
+                            keigoOps.KeigoEnglishSlice = append(keigoOps.KeigoEnglishSlice, key[:len(key)-1])
                         } else if romajipattern.MatchString(key) {
-                            keigoOps.keigoromajislice = append(keigoOps.keigoromajislice, key)
+                            keigoOps.KeigoRomajiSlice = append(keigoOps.KeigoRomajiSlice, key)
                         } else {
-                            keigoOps.keigojapaneseslice = append(keigoOps.keigojapaneseslice, key)
+                            keigoOps.KeigoJapaneseSlice = append(keigoOps.KeigoJapaneseSlice, key)
                         }
                     }
                 }
 
-                sort.Strings(keigoOps.keigoenglishslice)
-                sort.Strings(keigoOps.keigoromajislice)
+                sort.Strings(keigoOps.KeigoEnglishSlice)
+                sort.Strings(keigoOps.KeigoRomajiSlice)
 
-                keigoOps.alreadyRead = true
+                keigoOps.AlreadyRead = true
 
-                fmt.Println(keigoOps.keigoenglishslice)
-                fmt.Println(keigoOps.keigoromajislice)
-                fmt.Println(keigoOps.keigojapaneseslice)
+                fmt.Println(keigoOps.KeigoEnglishSlice)
+                fmt.Println(keigoOps.KeigoRomajiSlice)
+                fmt.Println(keigoOps.KeigoJapaneseSlice)
 
                 scanner.Scan()
                 userInput = scanner.Text()
 
-                if keigoOps.keigoMap != nil {
-                    keigoOps.printmapkeigo(userInput)
+                if keigoOps.KeigoMap != nil {
+                    keigoOps.PrintMapKeigo(userInput)
                 }
             } else if applicationSelector == "3" {
                 kanjiOps.FrequencyAnalysis("Onyomi")
