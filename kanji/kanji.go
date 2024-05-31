@@ -21,6 +21,8 @@ type KanjiReadings struct {
     Kunyomifrequencyslice [][]string
     Kunyomiwithhiraganafrequencyslice [][]string
 
+    ShowReadings bool
+
     strings.Builder
 
     regex *regexp.Regexp
@@ -71,7 +73,7 @@ func (kanjiOps* KanjiReadings) LoadFrequencies() {
     }
 }
 
-func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInput string, Readings bool) {
+func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInput string) {
     // Print out the name of the function
 
     // Jisho link string baseline
@@ -90,7 +92,7 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
             readingString = strings.ReplaceAll(readingString, "\\n", "\n")
             meaningString := string(kanjiOps.KanjiMeanings[currentKanji])
 
-            if Readings == true {
+            if kanjiOps.ShowReadings == true {
                 kanjiOps.WriteString(jishoBaseLink)
                 kanjiOps.WriteString(string(escaped))
                 kanjiOps.WriteString("%20%23kanji")
