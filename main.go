@@ -1,6 +1,7 @@
 // import the main package
 package main
 
+// Import all necessary packages 
 import (
     "bufio" // import bufio to scan in user input
     "fmt" // import the fmt package for printing
@@ -9,18 +10,14 @@ import (
     "KanjiFrequencyHelper/utils"
     "KanjiFrequencyHelper/kanji"
     "KanjiFrequencyHelper/keigo"
-    "regexp"
-    "sort"
     "strings"
     "sync"
 )
 
-
-
+// Builder struct to be used by the program
 type Builder struct {
     strings.Builder
 }
-
 
 // Main function
 func main() {
@@ -65,6 +62,7 @@ func main() {
                 return
             }
 
+            // Create switch statement for importing all csv files
             switch filePath {
                 case "./resources/KanjiFrequencyListOnyomi.csv":
                     kanjiOps.OnyomiMap = csvMap
@@ -106,7 +104,7 @@ func main() {
         
         userInput := ""
 
-
+        
         for userInput != "exit" {
             if applicationSelector == "1" {
                 utils.ClearScreen()
@@ -147,33 +145,7 @@ func main() {
                 }
 
             } else if applicationSelector == "2" {
-                utils.ClearScreen()
-                fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo Readings ('exit' to quit)")
-
-                if keigoOps.AlreadyRead == false {
-                    for key, _ := range keigoOps.KeigoMap { 
-                        englishpattern := regexp.MustCompile(`^[A-Za-z ]+\-$`)
-                        romajipattern := regexp.MustCompile(`^[A-Za-z ]+$`)
-
-                        if englishpattern.MatchString(key) {
-                            keigoOps.KeigoEnglishSlice = append(keigoOps.KeigoEnglishSlice, key[:len(key)-1])
-                        } else if romajipattern.MatchString(key) {
-                            keigoOps.KeigoRomajiSlice = append(keigoOps.KeigoRomajiSlice, key)
-                        } else {
-                            keigoOps.KeigoJapaneseSlice = append(keigoOps.KeigoJapaneseSlice, key)
-                        }
-                    }
-                }
-
-                sort.Strings(keigoOps.KeigoEnglishSlice)
-                sort.Strings(keigoOps.KeigoRomajiSlice)
-
-                keigoOps.AlreadyRead = true
-
-                fmt.Println(keigoOps.KeigoEnglishSlice)
-                fmt.Println(keigoOps.KeigoRomajiSlice)
-                fmt.Println(keigoOps.KeigoJapaneseSlice)
-
+                keigoOps.ReadKeigo(userInput)
                 scanner.Scan()
                 userInput = scanner.Text()
 
