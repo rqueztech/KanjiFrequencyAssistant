@@ -42,13 +42,11 @@ func (kanjiOps* KanjiReadings) LoadFrequencies() {
     kanjiOps.Kunyomifrequencyslice = make([][]string, 30)
     kanjiOps.Kunyomiwithhiraganafrequencyslice = make([][]string, 25)
 
-    hiraganaPattern := regexp.MustCompile(`[A-Za-z]`)
-
     for key, value := range kanjiOps.OnyomiMap {
 
         currentreadfrequency := len(value)
 
-        if hiraganaPattern.MatchString(key) {
+        if utils.GetPatternCleaning().IsCaptureRomanCharacters(key) {
             kanjiOps.Onyomifrequencyslice[currentreadfrequency] = append(kanjiOps.Onyomifrequencyslice[currentreadfrequency], key)
         }
 
@@ -58,7 +56,7 @@ func (kanjiOps* KanjiReadings) LoadFrequencies() {
 
         currentreadfrequency := len(value)
 
-        if hiraganaPattern.MatchString(key) {
+        if utils.GetPatternCleaning().IsCaptureRomanCharacters(key) {
             kanjiOps.Kunyomifrequencyslice[currentreadfrequency] = append(kanjiOps.Kunyomifrequencyslice[currentreadfrequency], key)
         }
 
@@ -67,7 +65,7 @@ func (kanjiOps* KanjiReadings) LoadFrequencies() {
 
         currentreadfrequency := len(value)
 
-        if hiraganaPattern.MatchString(key) {
+        if utils.GetPatternCleaning().IsCaptureRomanCharacters(key) {
             kanjiOps.Kunyomiwithhiraganafrequencyslice[currentreadfrequency] = append(kanjiOps.Kunyomiwithhiraganafrequencyslice[currentreadfrequency], key)
         }
     }
