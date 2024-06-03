@@ -4,23 +4,67 @@ import (
     "os"
     "os/exec"
     "runtime"
+    "regexp"
+    "sync"
 )
 
-// Read the from the os/exec package and create custom clearscreen
+type PatternCleaning struct {
+    EnglishPattern *regexp.Regexp
+    RomajiPattern  *regexp.Regexp
+    IllegalCharacters *regexp.Regexp
+    CaptureRomanCharacters *regexp.Regexp
+}
+
+var (
+    pc          *PatternCleaning
+    pcInitOnce  sync.Once
+)
+
+// NewPatternCleaning creates a new instance of PatternCleaning
+func NewPatternCleaning() *PatternCleaning {
+    pcInitOnce.Do(func() {
+        pc = &PatternCleaning{
+            EnglishPattern: regexp.MustCompile(`^[A-Za-z ]+\-$`),
+            RomajiPattern:  regexp.MustCompile(`^[A-Za-z ]+$`),
+            IllegalCharacters: regexp.MustCompile(`^[^A-Za-z ぁ-んァ-ン]+$`),
+            CaptureRomanCharacters: regexp.MustCompile(`[A-Za-z]`),
+        }
+    })
+    return pc
+}
+
+// GetPatternCleaning returns the singleton instance of PatternCleaning
+func GetPatternCleaning() *PatternCleaning {
+    return NewPatternCleaning()
+}
+
+func (pc *PatternCleaning) IsCaptureRomanCharacters(key string) bool {
+    return pc.CaptureRomanCharacters.MatchString(key)
+}
+
+func (pc *PatternCleaning) IsIllegalCharactersPattern(key string) bool {
+    return pc.IllegalCharacters.MatchString(key)
+}
+
+func (pc *PatternCleaning) IsEnglishPattern(key string) bool {
+    return pc.EnglishPattern.MatchString(key)
+}
+
+func (pc *PatternCleaning) IsRomajiPattern(key string) bool {
+    return pc.RomajiPattern.MatchString(key)
+}
+
+// ClearScreen clears the screen
 func ClearScreen() {
-    // Create a pointer to the exec.Cmd struct, which is used to build the command to be used.
     var cmd *exec.Cmd
 
-    // Check the runtime of the OS and create the command accordingly
     if runtime.GOOS == "windows" {
         cmd = exec.Command("cmd", "/c", "cls")
     } else {
         cmd = exec.Command("clear")
     }
 
-    // Set the Stdout to the os.Stdout
     cmd.Stdout = os.Stdout
-
-    // Run the command that was created
     cmd.Run()
 }
+
