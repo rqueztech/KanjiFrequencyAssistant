@@ -162,7 +162,20 @@ func main() {
                 kanjiOps.FrequencyAnalysis("Kunyomiwithhiragana")
                 userInput = "exit"
             } else if applicationSelector == "6" {
-                fmt.Println(utils.GetPatternCleaning().RemoveNonKanji("あい本物本当うえ同お"))
+                cleanstring := utils.GetPatternCleaning().RemoveNonKanji("ああい本物本当うえ同おあい本物本当うえ同おい本物本当うえ同お")
+                charMap := make(map[rune]bool)
+
+                for _, char := range cleanstring {
+                    charMap[char] = true
+                }
+
+                var removeduplicates string
+                for char := range charMap {
+                    removeduplicates += string(char)
+                }
+
+                fmt.Println(removeduplicates)
+                userInput = "exit"
             }
             fmt.Println("Press Enter to continue...")
             
