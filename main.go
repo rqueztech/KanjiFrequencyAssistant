@@ -6,6 +6,7 @@ import (
     "bufio" // import bufio to scan in user input
     "fmt" // import the fmt package for printing
     "os"
+    "net/url"
     "KanjiFrequencyHelper/csvoperations"
     "KanjiFrequencyHelper/utils"
     "KanjiFrequencyHelper/kanji"
@@ -162,10 +163,15 @@ func main() {
                 kanjiOps.FrequencyAnalysis("Kunyomiwithhiragana")
                 userInput = "exit"
             } else if applicationSelector == "6" {
-                cleanstring := utils.GetPatternCleaning().RemoveNonKanji("ああい本物本当うえ同おあい本物本当うえ同おい本物本当うえ同お")
+                fmt.Println("Enter Kanji Here: ")
+                scanner.Scan()
+                userInput = scanner.Text()
+
                 charMap := make(map[rune]bool)
 
-                for _, char := range cleanstring {
+                userInput = utils.GetPatternCleaning().RemoveNonKanji(userInput)
+
+                for _, char := range userInput {
                     charMap[char] = true
                 }
 
@@ -174,7 +180,15 @@ func main() {
                     removeduplicates += string(char)
                 }
 
-                fmt.Println(removeduplicates)
+
+                for _, char := range removeduplicates {
+                    currentKanji := string(char)
+                    queryescaped := url.QueryEscape(currentKanji)
+                    kanjiDefinition := string(kanjiOps.KanjiMeanings[string(char)])
+
+                    fmt.Printf("%s -> \t%s \t\tLink: https://www.jisho.org/search/%s%20%23kanji\n", currentKanji, kanjiDefinition, queryescaped)
+                }
+
                 userInput = "exit"
             }
             fmt.Println("Press Enter to continue...")
