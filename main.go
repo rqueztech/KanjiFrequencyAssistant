@@ -97,7 +97,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         utils.ClearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Exit\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -161,7 +161,9 @@ func main() {
             } else if applicationSelector == "5" {
                 kanjiOps.FrequencyAnalysis("Kunyomiwithhiragana")
                 userInput = "exit"
-            } 
+            } else if applicationSelector == "6" {
+                fmt.Println(utils.GetPatternCleaning().RemoveNonKanji("あい本物本当うえ同お"))
+            }
             fmt.Println("Press Enter to continue...")
             
             scanner.Scan()
