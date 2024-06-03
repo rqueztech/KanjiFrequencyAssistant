@@ -1,11 +1,12 @@
 package keigo
 
 import (
+    "KanjiFrequencyHelper/utils"
     "bufio"
     "fmt"
     "os"
     "strings"
-    "regexp"
+    "sort"
 )
 
 type KeigoReadings struct {
@@ -14,7 +15,37 @@ type KeigoReadings struct {
     KeigoEnglishSlice []string
     KeigoRomajiSlice []string
     KeigoJapaneseSlice []string
-    regex * regexp.Regexp
+
+}
+
+func (keigoOps* KeigoReadings) ReadKeigo(userinput string) {
+    utils.ClearScreen()
+    fmt.Println("KEIGO ASSISTANT: Enter english word to get all keigo Readings ('exit' to quit)")
+
+    if keigoOps.AlreadyRead == false {
+        for key, _ := range keigoOps.KeigoMap {
+            if utils.GetPatternCleaning().IsIllegalCharactersPattern(key) {
+                break
+            }
+
+            if utils.GetPatternCleaning().IsEnglishPattern(key) {
+                keigoOps.KeigoEnglishSlice = append(keigoOps.KeigoEnglishSlice, key[:len(key)-1])
+            } else if utils.GetPatternCleaning().IsRomajiPattern(key) {
+                keigoOps.KeigoRomajiSlice = append(keigoOps.KeigoRomajiSlice, key)
+            } else {
+                keigoOps.KeigoJapaneseSlice = append(keigoOps.KeigoJapaneseSlice, key)
+            }
+        }
+    }
+
+    sort.Strings(keigoOps.KeigoEnglishSlice)
+    sort.Strings(keigoOps.KeigoRomajiSlice)
+
+    keigoOps.AlreadyRead = true
+
+    fmt.Println(keigoOps.KeigoEnglishSlice)
+    fmt.Println(keigoOps.KeigoRomajiSlice)
+    fmt.Println(keigoOps.KeigoJapaneseSlice)
 }
 
 func (keigoOps* KeigoReadings) PrintMapKeigo(userinput string) {
