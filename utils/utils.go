@@ -13,6 +13,7 @@ type PatternCleaning struct {
     RomajiPattern  *regexp.Regexp
     IllegalCharacters *regexp.Regexp
     CaptureRomanCharacters *regexp.Regexp
+    CaptureNonKanji *regexp.Regexp
 }
 
 var (
@@ -28,6 +29,7 @@ func NewPatternCleaning() *PatternCleaning {
             RomajiPattern:  regexp.MustCompile(`^[A-Za-z ]+$`),
             IllegalCharacters: regexp.MustCompile(`^[^A-Za-z ぁ-んァ-ン]+$`),
             CaptureRomanCharacters: regexp.MustCompile(`[A-Za-z]`),
+            CaptureNonKanji: regexp.MustCompile(`[^\p{Han}]`),
         }
     })
     return pc
@@ -36,6 +38,10 @@ func NewPatternCleaning() *PatternCleaning {
 // GetPatternCleaning returns the singleton instance of PatternCleaning
 func GetPatternCleaning() *PatternCleaning {
     return NewPatternCleaning()
+}
+
+func (pc *PatternCleaning) RemoveNonKanji(key string) string {
+    return pc.CaptureNonKanji.ReplaceAllString(key, "")
 }
 
 func (pc *PatternCleaning) IsCaptureRomanCharacters(key string) bool {
