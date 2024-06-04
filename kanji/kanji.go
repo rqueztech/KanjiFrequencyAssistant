@@ -92,19 +92,27 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
             readingString := string(kanjiOps.Readings[currentKanji])
             meaningString := string(kanjiOps.KanjiMeanings[currentKanji])
             
+            numberOfReadings := ""
 
             readingStringsplit := strings.Split(readingString, "*")
-            numberOfReadings := readingStringsplit[2]
+            if len(readingStringsplit) > 1 {
+                numberOfReadings = readingStringsplit[2]
+            } else {
+                fmt.Println("\nLength error at", currentKanji)
+            }
 
-
-            if kanjiOps.ShowReadings == true {
+            if kanjiOps.ShowReadings == true && string(numberOfReadings[1]) == "Both" {
                 kanjiOps.WriteString(jishoBaseLink)
                 kanjiOps.WriteString(string(escaped))
                 kanjiOps.WriteString("%20%23kanji")
 
                 kanjilink := kanjiOps.String()
                 kanjiOps.Reset()
-                fmt.Printf("\n\n%s (%s) %s: %s -> %s: %s", kanjiString, userInput, numberOfReadings, meaningString, readingString, kanjilink)
+                if numberOfReadings != "1" {
+                    fmt.Printf("\n\t%s (%s) %s: %s -> %s: %s", kanjiString, userInput, numberOfReadings, meaningString, readingString, kanjilink)
+                } else {
+                    fmt.Printf("\n%s (%s) %s: %s -> %s: %s", kanjiString, userInput, numberOfReadings, meaningString, readingString, kanjilink)
+                }
 
                 escaped = url.QueryEscape("*" + kanjiString + "*")
                 kanjiOps.WriteString(jishoBaseLink)
@@ -119,12 +127,16 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
                 kanjiOps.WriteString("%20%23kanji")
 
                 linkOutput := kanjiOps.String()
-                fmt.Printf("\n%s (%s): %s %s -> %s", kanjiString, userInput, numberOfReadings, meaningString, linkOutput)
+                if string(numberOfReadings) != "1" {
+                    fmt.Printf("\n\t%s (%s): %s %s -> %s", kanjiString, userInput, numberOfReadings, meaningString, linkOutput)
+                } else {
+                    fmt.Printf("\n%s (%s): %s %s -> %s", kanjiString, userInput, numberOfReadings, meaningString, linkOutput)
+                }
                 kanjiOps.Reset()
             }
         } 
 
-        fmt.Printf("\nNumber of [[%s]] Readings --> : %d", userInput, len(map_result))
+        fmt.Printf("\nNumber of [[%s]] Readings --> : %d\n\n", userInput, len(map_result))
     }
 }
 
