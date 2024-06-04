@@ -16,6 +16,9 @@ type KanjiReadings struct {
     KunyomiWithHiragana map[string][]rune
     KanjiMeanings map[string][]rune
     Readings map[string][]rune
+    FullDetailsBoth map[string][]rune
+    FullDetailsKunyomi map[string][]rune
+    FullDetailsOnyomi map[string][]rune
 
     Onyomifrequencyslice  [][]string
     Kunyomifrequencyslice [][]string
@@ -87,8 +90,12 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
 
             currentKanji := string(currentKanjiRune)
             readingString := string(kanjiOps.Readings[currentKanji])
-            readingString = strings.ReplaceAll(readingString, "\\n", "\n")
             meaningString := string(kanjiOps.KanjiMeanings[currentKanji])
+            
+
+            readingStringsplit := strings.Split(readingString, "*")
+            numberOfReadings := readingStringsplit[2]
+
 
             if kanjiOps.ShowReadings == true {
                 kanjiOps.WriteString(jishoBaseLink)
@@ -96,19 +103,15 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
                 kanjiOps.WriteString("%20%23kanji")
 
                 kanjilink := kanjiOps.String()
-                linkOutput := strings.ReplaceAll(kanjilink, "\\n", "\n")
                 kanjiOps.Reset()
-                fmt.Printf("\n\n%s (%s): %s -> %s\nKanji Link: %s", kanjiString, userInput, meaningString, readingString, linkOutput)
+                fmt.Printf("\n\n%s (%s) %s: %s -> %s: %s", kanjiString, userInput, numberOfReadings, meaningString, readingString, kanjilink)
 
                 escaped = url.QueryEscape("*" + kanjiString + "*")
                 kanjiOps.WriteString(jishoBaseLink)
                 kanjiOps.WriteString(string(escaped))
                 kanjiOps.WriteString("%20%23common")
 
-                commonwordlink := kanjiOps.String()
-                linkOutput = strings.ReplaceAll(commonwordlink, "\\n", "\n")
                 kanjiOps.Reset()
-                fmt.Println("Words Link: %s\n", commonwordlink)
 
             } else {
                 kanjiOps.WriteString(jishoBaseLink)
@@ -116,12 +119,12 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
                 kanjiOps.WriteString("%20%23kanji")
 
                 linkOutput := kanjiOps.String()
-                fmt.Printf("\n%s (%s): %s -> %s", kanjiString, userInput, meaningString, linkOutput)
+                fmt.Printf("\n%s (%s): %s %s -> %s", kanjiString, userInput, numberOfReadings, meaningString, linkOutput)
                 kanjiOps.Reset()
             }
         } 
 
-        fmt.Printf("\nNumber of [[%s]] Readings --> : %d\n", userInput, len(map_result))
+        fmt.Printf("\nNumber of [[%s]] Readings --> : %d", userInput, len(map_result))
     }
 }
 
