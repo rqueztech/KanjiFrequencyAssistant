@@ -14,6 +14,7 @@ type PatternCleaning struct {
     IllegalCharacters *regexp.Regexp
     CaptureRomanCharacters *regexp.Regexp
     CaptureNonKanji *regexp.Regexp
+    CaptureNonNumbers *regexp.Regexp
 }
 
 var (
@@ -30,6 +31,7 @@ func NewPatternCleaning() *PatternCleaning {
             IllegalCharacters: regexp.MustCompile(`^[^A-Za-z ぁ-んァ-ン]+$`),
             CaptureRomanCharacters: regexp.MustCompile(`[A-Za-z]`),
             CaptureNonKanji: regexp.MustCompile(`[^\p{Han}]`),
+            CaptureNonNumbers: regexp.MustCompile(`[^\d]`),
         }
     })
     return pc
@@ -38,6 +40,10 @@ func NewPatternCleaning() *PatternCleaning {
 // GetPatternCleaning returns the singleton instance of PatternCleaning
 func GetPatternCleaning() *PatternCleaning {
     return NewPatternCleaning()
+}
+
+func (pc *PatternCleaning) RemoveNotNumber(key string) string {
+    return pc.CaptureNonNumbers.ReplaceAllString(key, "")
 }
 
 func (pc *PatternCleaning) RemoveNonKanji(key string) string {
