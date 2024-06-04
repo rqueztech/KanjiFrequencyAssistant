@@ -144,15 +144,15 @@ func main() {
                 }
 
                 // Send each string into the PrintMap
-                if kanjiOps.OnyomiMap != nil {
+                if kanjiOps.OnyomiMap != nil && kanjiOps.OnyomiMap[userInput] != nil{
                     kanjiOps.PrintMap("Onyomi", kanjiOps.OnyomiMap[userInput], userInput)
                 }
 
-                if kanjiOps.KunyomiMap != nil {
+                if kanjiOps.KunyomiMap != nil && kanjiOps.KunyomiMap[userInput] != nil{
                     kanjiOps.PrintMap("Kunyomi", kanjiOps.KunyomiMap[userInput], userInput)
                 }
 
-                if kanjiOps.KunyomiWithHiragana != nil {
+                if kanjiOps.KunyomiWithHiragana != nil && kanjiOps.KunyomiWithHiragana[userInput] != nil{
                     kanjiOps.PrintMap("Kunyomiwithhiragana", kanjiOps.KunyomiWithHiragana[userInput], userInput)
                 }
 
