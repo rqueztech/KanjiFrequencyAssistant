@@ -44,6 +44,9 @@ func main() {
         "./resources/KanjiMeanings.csv",
         "./resources/all_Readings_string.csv",
         "./resources/keigo_mapper.csv",
+        "./resources/FullDetailsBoth.csv",
+        "./resources/FullDetailsKunyomi.csv",
+        "./resources/FullDetailsOnyomi.csv",
     }
 
     lenFiles := len(filePaths)
@@ -83,6 +86,16 @@ func main() {
 
                 case "./resources/keigo_mapper.csv":
                     keigoOps.KeigoMap = csvMap
+
+                case "./resources/FullDetailsBoth.csv":
+					kanjiOps.FullDetailsBoth = csvMap
+
+                case "./resources/FullDetailsKunyomi.csv":
+					kanjiOps.FullDetailsBoth = csvMap
+
+                case "./resources/FullDetailsOnyomi.csv":
+					kanjiOps.FullDetailsBoth = csvMap
+
             }
 
         }(filePath)
@@ -98,7 +111,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         utils.ClearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Enter Phrase to link \n8. Exit\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -126,11 +139,9 @@ func main() {
 
                 if userInput == "readings" {
                     kanjiOps.ShowReadings = !kanjiOps.ShowReadings
-                    fmt.Println("Reading data silenced...")
                     _ = bufio.NewScanner(os.Stdin)
                     continue
                 }
-
 
                 // Send each string into the PrintMap
                 if kanjiOps.OnyomiMap != nil {
@@ -180,17 +191,39 @@ func main() {
                     removeduplicates += string(char)
                 }
 
-
                 for _, char := range removeduplicates {
                     currentKanji := string(char)
                     queryescaped := url.QueryEscape(currentKanji)
                     kanjiDefinition := string(kanjiOps.KanjiMeanings[string(char)])
 
-                    fmt.Printf("%s -> \t%s \t\tLink: https://www.jisho.org/search/%s%20%23kanji\n", currentKanji, kanjiDefinition, queryescaped)
-                }
+                    numReadings := string(kanjiOps.Readings[string(char)])
+                    slicedreadings := strings.Split(numReadings, "*")
+                    
+                    fmt.Println(slicedreadings[1])
 
-                userInput = "exit"
+                    if slicedreadings[1] == "Both" {
+                        fmt.Println(slicedreadings[2])
+                        fmt.Println(slicedreadings[4])
+                    } else if slicedreadings[1] == "Kunyomi" {
+                        fmt.Println("NUMBER OF READINGS")
+                        fmt.Println(slicedreadings[4])
+                    } else if slicedreadings[1] == "Onyomi" {
+                        fmt.Println("NUMBER OF READIGNS")
+                        fmt.Println(slicedreadings[4])
+                    }
+
+                    fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, queryescaped)
+                }
+            } else if applicationSelector == "7" {
+                fmt.Println("Enter Kanji Here: ")
+                scanner.Scan()
+                userInput = scanner.Text()
+
+                queryescaped := url.QueryEscape(userInput)
+
+                fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, queryescaped)
             }
+
             fmt.Println("Press Enter to continue...")
             
             scanner.Scan()
