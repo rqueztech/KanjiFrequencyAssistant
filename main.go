@@ -216,12 +216,29 @@ func main() {
                 }
             } else if applicationSelector == "7" {
                 fmt.Println("Enter Kanji Here: ")
-                scanner.Scan()
-                userInput = scanner.Text()
+                userInput = ""
 
-                queryescaped := url.QueryEscape(userInput)
+                for userInput != "exit" {
+                    fmt.Println("Enter Input: ('exit' to quit)")
+                    scanner.Scan()
+                    userInput = scanner.Text()
+                    _ = scanner.Text()
 
-                fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, queryescaped)
+                    if utils.GetPatternCleaning().IsRomajiPattern(userInput) {
+                        fmt.Println("Please Enter Japense Characters")
+                    } else {
+                        queryescaped := url.QueryEscape(userInput)
+
+                        fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, queryescaped)
+                    }
+                }
+
+
+                userInput = "exit"
+            } else {
+                utils.ClearScreen()
+                fmt.Println("Enter valid input")
+                userInput = "exit"
             }
 
             fmt.Println("Press Enter to continue...")
