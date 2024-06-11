@@ -47,6 +47,7 @@ func main() {
         "./resources/FullDetailsBoth.csv",
         "./resources/FullDetailsKunyomi.csv",
         "./resources/FullDetailsOnyomi.csv",
+        "./resources/KunyomiByEndings.csv",
     }
 
     lenFiles := len(filePaths)
@@ -96,6 +97,8 @@ func main() {
                 case "./resources/FullDetailsOnyomi.csv":
 					kanjiOps.FullDetailsBoth = csvMap
 
+                case "./resources/KunyomiByEndings.csv":
+                    kanjiOps.KunyomiByEndings = csvMap
             }
 
         }(filePath)
@@ -111,7 +114,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         utils.ClearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Enter Phrase to link \n8. Exit\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Enter Phrase to link \n8. KunyomiByEndings\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -234,6 +237,23 @@ func main() {
                 }
 
 
+                userInput = "exit"
+            } else if applicationSelector == "8" {
+
+                scanner.Scan()
+                userInput = scanner.Text()
+
+                if value, exists := kanjiOps.KunyomiByEndings[userInput]; exists {
+                    if value != nil {
+                        fmt.Println(value)
+                    } else {
+                        fmt.Println("Value is nil")
+                    }
+                } else {
+                    fmt.Println("Key not found")
+                }
+
+                fmt.Println("Exiting...")
                 userInput = "exit"
             } else {
                 utils.ClearScreen()
