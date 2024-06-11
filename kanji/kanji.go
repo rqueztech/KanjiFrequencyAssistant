@@ -19,6 +19,7 @@ type KanjiReadings struct {
     FullDetailsBoth map[string][]rune
     FullDetailsKunyomi map[string][]rune
     FullDetailsOnyomi map[string][]rune
+    KunyomiByEndings map[string][]rune
 
     Onyomifrequencyslice  [][]string
     Kunyomifrequencyslice [][]string
