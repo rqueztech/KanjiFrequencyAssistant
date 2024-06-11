@@ -240,12 +240,19 @@ func main() {
                 userInput = "exit"
             } else if applicationSelector == "8" {
 
+                fmt.Println("Enter Kunyomi Ending Here: ")
                 scanner.Scan()
                 userInput = scanner.Text()
 
+                if userInput == "exit" {
+                    userInput = "exit"
+                    break
+                }
+
                 if value, exists := kanjiOps.KunyomiByEndings[userInput]; exists {
                     if value != nil {
-                        fmt.Println(value)
+                        fmt.Println(string(value))
+                        fmt.Printf("Number of [%s] readings: %d\n", userInput, len(value))
                     } else {
                         fmt.Println("Value is nil")
                     }
@@ -253,8 +260,6 @@ func main() {
                     fmt.Println("Key not found")
                 }
 
-                fmt.Println("Exiting...")
-                userInput = "exit"
             } else {
                 utils.ClearScreen()
                 fmt.Println("Enter valid input")
