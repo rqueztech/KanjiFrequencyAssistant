@@ -48,6 +48,7 @@ func main() {
         "./resources/FullDetailsKunyomi.csv",
         "./resources/FullDetailsOnyomi.csv",
         "./resources/KunyomiByEndings.csv",
+        "./resources/TranslatorMap.csv",
     }
 
     lenFiles := len(filePaths)
@@ -99,6 +100,9 @@ func main() {
 
                 case "./resources/KunyomiByEndings.csv":
                     kanjiOps.KunyomiByEndings = csvMap
+
+                case "./resources/TranslatorMap.csv":
+                    kanjiOps.TranslatorMap = csvMap
             }
 
         }(filePath)
@@ -145,7 +149,7 @@ func main() {
                     _ = bufio.NewScanner(os.Stdin)
                     continue
                 }
-
+                    
                 // Send each string into the PrintMap
                 if kanjiOps.OnyomiMap != nil && kanjiOps.OnyomiMap[userInput] != nil{
                     kanjiOps.PrintMap("Onyomi", kanjiOps.OnyomiMap[userInput], userInput)
@@ -196,7 +200,7 @@ func main() {
 
                 for _, char := range removeduplicates {
                     currentKanji := string(char)
-                    queryescaped := url.QueryEscape(currentKanji)
+                    QueryEscaped := url.QueryEscape(currentKanji)
                     kanjiDefinition := string(kanjiOps.KanjiMeanings[string(char)])
 
                     numReadings := string(kanjiOps.Readings[string(char)])
@@ -215,7 +219,7 @@ func main() {
                         fmt.Println(slicedreadings[4])
                     }
 
-                    fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, queryescaped)
+                    fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
                 }
             } else if applicationSelector == "7" {
                 fmt.Println("Enter Kanji Here: ")
@@ -230,34 +234,35 @@ func main() {
                     if utils.GetPatternCleaning().IsRomajiPattern(userInput) {
                         fmt.Println("Please Enter Japense Characters")
                     } else {
-                        queryescaped := url.QueryEscape(userInput)
+                        QueryEscaped := url.QueryEscape(userInput)
 
-                        fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, queryescaped)
+                        fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, QueryEscaped)
                     }
                 }
 
 
                 userInput = "exit"
             } else if applicationSelector == "8" {
+                utils.ClearScreen()
 
-                fmt.Println("Enter Kunyomi Ending Here: ")
+                fmt.Println("Enter Kunyomi Word Ending Here: ")
                 scanner.Scan()
                 userInput = scanner.Text()
+
+                if userInput == "clear" {
+                    utils.ClearScreen()
+                    continue
+                }
 
                 if userInput == "exit" {
                     userInput = "exit"
                     break
                 }
-
-                if value, exists := kanjiOps.KunyomiByEndings[userInput]; exists {
-                    if value != nil {
-                        fmt.Println(string(value))
-                        fmt.Printf("Number of [%s] readings: %d\n", userInput, len(value))
-                    } else {
-                        fmt.Println("Value is nil")
-                    }
-                } else {
-                    fmt.Println("Key not found")
+                
+                for _, currentkanji := range(kanjiOps.KunyomiByEndings[userInput]) {
+                    hiraganatranslation := kanjiOps.TranslatorMap[userInput]
+                    jointword := url.QueryEscape(string(currentkanji) + string(hiraganatranslation))
+                    fmt.Printf("%s%s\n -> https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), jointword)
                 }
 
             } else {

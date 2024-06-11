@@ -9,6 +9,7 @@ import (
     "KanjiFrequencyHelper/utils"
 )
 
+
 // Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
 type KanjiReadings struct {
     OnyomiMap map[string][]rune
@@ -20,6 +21,7 @@ type KanjiReadings struct {
     FullDetailsKunyomi map[string][]rune
     FullDetailsOnyomi map[string][]rune
     KunyomiByEndings map[string][]rune
+    TranslatorMap map[string][]rune
 
     Onyomifrequencyslice  [][]string
     Kunyomifrequencyslice [][]string
@@ -140,6 +142,23 @@ func (kanjiOps* KanjiReadings) PrintMap(title string, map_result []rune, userInp
         fmt.Printf("\nNumber of [[%s]] Readings --> : %d\n\n", userInput, len(map_result))
     }
 }
+
+func (kanjiOps* KanjiReadings) PrintKunyomiWordMap(title string, map_result []rune, userInput string) {
+    // Print out the name of the function
+
+    // Jisho link string baseline
+    jishoBaseLink := "https://www.jisho.org/search/"
+
+    if map_result != nil {
+        fmt.Printf("============ %s ================", title)
+
+        // Check if the value exists in the map, if not prints out DOES NOT EXIST
+        for _, currentKanjiRune := range(map_result) {
+            fmt.Printf("%s%s, %s\n", jishoBaseLink, string(currentKanjiRune), userInput)
+        }
+    }
+}
+
 
 func (kanjiOps* KanjiReadings) FrequencyAnalysis(userinput string) {
     utils.ClearScreen()
