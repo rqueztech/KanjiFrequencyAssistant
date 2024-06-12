@@ -664,21 +664,21 @@
 保つ,Both*to keep、 to maintain*たもつ
 八つ,numeric*eight*やつ
 六つ,numeric*six*むっつ
-勝つ,intrans*to win、 to be victorious*かつ
+勝つ,Intransative*to win、 to be victorious*かつ
 四つ,numeric*four*よつ
-建つ,intrans*to be built、 to stand*たつ
-待つ,intrans*to wait、 to await*まつ
+建つ,Intransative*to be built、 to stand*たつ
+待つ,Intransative*to wait、 to await*まつ
 打つ,trans*to hit、 to strike*うつ
 持つ,trans*to hold、 to carry*もつ
 撃つ,trans*to shoot、 to attack*うつ
 放つ,trans*to release、 to emit*はなつ
 断つ,trans*to sever、 to cut off*たつ
-立つ,intrans*to stand、 to rise*たつ
+立つ,Intransative*to stand、 to rise*たつ
 絶つ,trans*to sever、 to cut off*たつ
 育つ,trans*to grow、 to be brought up*そだつ
-裁つ,intrans*to cut、 to tailor*たつ
+裁つ,Intransative*to cut、 to tailor*たつ
 討つ,trans*to attack、 to defeat*うつ
-過つ,intrans*to err、 to make a mistake*たつ
+過つ,Intransative*to err、 to make a mistake*たつ
 全て,adverb*everything、 all*すべて
 果て,Noun*end、 limit*はて
 企てる,Transative*to plan、 to scheme*くわだてる
@@ -819,147 +819,147 @@
 試みる,Transative*to attempt、 to try*こころみる
 鑑みる,Transative*to consider、 to take into account*かんがみる
 顧みる,Transative*to look back、 to reflect on*かえりみる
-休む,Trans*to rest、 to take a break*やすむ
-住む,Intrans*to live、 to reside*すむ
-傷む,Intrans*to be damaged、 to be hurt*いたむ
-刻む,Trans*to carve、 to engrave*きざむ
-励む,Intrans*to strive、 to make an effort*はげむ
-勇む,Intrans*to be brave、 to be spirited*いさむ
-包む,Trans*to wrap、 to envelop*つつむ
-含む,Trans*to contain、 to include*ふくむ
-和む,Intrans*to harmonize、 to get along*なごむ
-営む,Trans*to run、 to operate*いとなむ
-囲む,Trans*to surround、 to enclose*かこむ
-好む,Trans*to like、 to prefer*このむ
-妬む,Trans*to be jealous of、 to envy*ねたむ
-富む,Intrans*to be wealthy、 to be rich*とむ
+休む,Transative*to rest、 to take a break*やすむ
+住む,Intransative*to live、 to reside*すむ
+傷む,Intransative*to be damaged、 to be hurt*いたむ
+刻む,Transative*to carve、 to engrave*きざむ
+励む,Intransative*to strive、 to make an effort*はげむ
+勇む,Intransative*to be brave、 to be spirited*いさむ
+包む,Transative*to wrap、 to envelop*つつむ
+含む,Transative*to contain、 to include*ふくむ
+和む,Intransative*to harmonize、 to get along*なごむ
+営む,Transative*to run、 to operate*いとなむ
+囲む,Transative*to surround、 to enclose*かこむ
+好む,Transative*to like、 to prefer*このむ
+妬む,Transative*to be jealous of、 to envy*ねたむ
+富む,Intransative*to be wealthy、 to be rich*とむ
 弾む,Both*to bounce、 to reverberate*はずむ
-忌む,Intrans*to avoid、 to shun*いむ
-恨む,Trans*to resent、 to bear a grudge*うらむ
-恵む,Trans*to bless、 to show mercy*めぐむ
-悩む,Intrans*to worry、 to be troubled*なやむ
-悼む,Trans*to mourn、 to lament*いたむ
-慎む,Trans*to be careful、 to be cautious*つつしむ
-慰む,Intrans*to console、 to comfort*なぐさむ
-憎む,Trans*to hate、 to detest*にくむ
-拒む,Trans*to refuse、 to reject*こばむ
-拝む,Trans*to worship、 to pray to*おがむ
-挑む,Intrans*to challenge、 to defy*いどむ
-挟む,Trans*to sandwich、 to insert*はさむ
-摘む,Trans*to pluck、 to pick*つまむ
-望む,Trans*to wish、 to hope for*のぞむ
-歩む,Intrans*to walk、 to proceed*あゆむ
-沈む,Intrans*to sink、 to go down*しずむ
-涼む,Intrans*to cool down、 to take a rest*すずむ
-混む,Intrans*to be crowded、 to be congested*こむ
-済む,Intrans*to finish、 to be over*すむ
-潜む,Intrans*to lurk、 to hide*ひそむ
-潤む,Intrans*to moisten、 to be teary*うるむ
-澄む,Intrans*to clear up、 to become clear*すむ
-生む,Trans*to give birth、 to produce*うむ
-産む,Trans*to give birth、 to produce*うむ
-畳む,Trans*to fold、 to lay out*たたむ
-疎む,Trans*to neglect、 to alienate*うとむ
-病む,Trans*to be ill、 to suffer from*やむ
-痛む,Intrans*to ache、 to hurt*いたむ
-盗む,Trans*to steal、 to pilfer*ぬすむ
-積む,Trans*to pile up、 to stack*つむ
+忌む,Intransative*to avoid、 to shun*いむ
+恨む,Transative*to resent、 to bear a grudge*うらむ
+恵む,Transative*to bless、 to show mercy*めぐむ
+悩む,Intransative*to worry、 to be troubled*なやむ
+悼む,Transative*to mourn、 to lament*いたむ
+慎む,Transative*to be careful、 to be cautious*つつしむ
+慰む,Intransative*to console、 to comfort*なぐさむ
+憎む,Transative*to hate、 to detest*にくむ
+拒む,Transative*to refuse、 to reject*こばむ
+拝む,Transative*to worship、 to pray to*おがむ
+挑む,Intransative*to challenge、 to defy*いどむ
+挟む,Transative*to sandwich、 to insert*はさむ
+摘む,Transative*to pluck、 to pick*つまむ
+望む,Transative*to wish、 to hope for*のぞむ
+歩む,Intransative*to walk、 to proceed*あゆむ
+沈む,Intransative*to sink、 to go down*しずむ
+涼む,Intransative*to cool down、 to take a rest*すずむ
+混む,Intransative*to be crowded、 to be congested*こむ
+済む,Intransative*to finish、 to be over*すむ
+潜む,Intransative*to lurk、 to hide*ひそむ
+潤む,Intransative*to moisten、 to be teary*うるむ
+澄む,Intransative*to clear up、 to become clear*すむ
+生む,Transative*to give birth、 to produce*うむ
+産む,Transative*to give birth、 to produce*うむ
+畳む,Transative*to fold、 to lay out*たたむ
+疎む,Transative*to neglect、 to alienate*うとむ
+病む,Transative*to be ill、 to suffer from*やむ
+痛む,Intransative*to ache、 to hurt*いたむ
+盗む,Transative*to steal、 to pilfer*ぬすむ
+積む,Transative*to pile up、 to stack*つむ
 笑む,Inrans*to smile、 to laugh*えむ
-組む,Trans*to assemble、 to join*くむ
-絡む,Intrans*to be entwined、 to be involved*からむ
-編む,Trans*to knit、 to weave*あむ
-緩む,Intrans*to loosen、 to slacken*ゆるむ
-縮む,Intrans*to shrink、 to contract*ちぢむ
-羨む,Trans*to envy、 to be jealous of*うらやむ
-育む,Trans*to nurture、 to foster*はぐくむ
-臨む,Intrans*to face、 to confront*のぞむ
-蔑む,Trans*to despise、 to scorn*さげすむ
-詠む,Trans*to recite、 to compose （poetry）*よむ
-詰む,Intrans*to pack、 to be stuffed*つめる
-読む,Trans*to read、 to peruse*よむ
-謹む,Trans*to be cautious、 to be careful*つつしむ
-踏む,Trans*to step on、 to tread on*ふむ
-込む,Intrans*to be crowded、 to be packed*こむ
-進む,Intrans*to advance、 to proceed*すすむ
-酌む,Trans*to serve （alcohol）、 to pour*くむ
-阻む,Trans*to obstruct、 to hinder*はばむ
-頼む,Trans*to ask、 to request*たのむ
-飲む,Trans*to drink、 to consume*のむ
+組む,Transative*to assemble、 to join*くむ
+絡む,Intransative*to be entwined、 to be involved*からむ
+編む,Transative*to knit、 to weave*あむ
+緩む,Intransative*to loosen、 to slacken*ゆるむ
+縮む,Intransative*to shrink、 to contract*ちぢむ
+羨む,Transative*to envy、 to be jealous of*うらやむ
+育む,Transative*to nurture、 to foster*はぐくむ
+臨む,Intransative*to face、 to confront*のぞむ
+蔑む,Transative*to despise、 to scorn*さげすむ
+詠む,Transative*to recite、 to compose （poetry）*よむ
+詰む,Intransative*to pack、 to be stuffed*つめる
+読む,Transative*to read、 to peruse*よむ
+謹む,Transative*to be cautious、 to be careful*つつしむ
+踏む,Transative*to step on、 to tread on*ふむ
+込む,Intransative*to be crowded、 to be packed*こむ
+進む,Intransative*to advance、 to proceed*すすむ
+酌む,Transative*to serve （alcohol）、 to pour*くむ
+阻む,Transative*to obstruct、 to hinder*はばむ
+頼む,Transative*to ask、 to request*たのむ
+飲む,Transative*to drink、 to consume*のむ
 初め,Adverbs*beginning、 start*はじめ
 惨め,naAdj*miserable、 pitiful*みじめ
 斜め,naAdj*diagonal、 oblique*ななめ
 恨めしい,iAdj*hateful、 resentful*うらめしい
 初めて,Adverbs*for the first time*はじめて
-丸める,Trans*to round up、 to roll up*まるめる
-休める,Trans*to let rest、 to give a break*やすめる
-低める,Trans*to lower、 to reduce*ひくめる
-修める,Trans*to study、 to cultivate*おさめる
-傷める,Trans*to injure、 to hurt*いためる
-冷める,Intrans*to cool down、 to chill*さめる
-初める,Trans*to begin、 to start*そめる
-努める,Intrans*to strive、 to make an effort*つとめる
-務める,Trans*to serve、 to work as*つとめる
+丸める,Transative*to round up、 to roll up*まるめる
+休める,Transative*to let rest、 to give a break*やすめる
+低める,Transative*to lower、 to reduce*ひくめる
+修める,Transative*to study、 to cultivate*おさめる
+傷める,Transative*to injure、 to hurt*いためる
+冷める,Intransative*to cool down、 to chill*さめる
+初める,Transative*to begin、 to start*そめる
+努める,Intransative*to strive、 to make an effort*つとめる
+務める,Transative*to serve、 to work as*つとめる
 勤める,Inrans*to serve、 to work as*すすめる
-勧める,Trans*to recommend、 to advise*すすめる
-占める,Trans*to constitute、 to comprise*しめる
-収める,Trans*to store、 to keep*おさめる
-含める,Trans*to include、 to contain*ふくめる
-固める,Trans*to harden、 to solidify*かためる
-埋める,Trans*to bury、 to fill in*うめる
-始める,Trans*to begin、 to start*はじめる
-定める,Trans*to decide、 to determine*さだめる
-広める,Trans*to spread、 to widen*ひろめる
-弱める,Trans*to weaken、 to make weaker*よわめる
-強める,Trans*to strengthen、 to make stronger*つよめる
-慰める,Trans*to comfort、 to console*なぐさめる
-戒める,Trans*to admonish、 to warn*いましめる
-改める,Trans*to change、 to reform*あらためる
-攻める,Trans*to attack、 to assault*せめる
-早める,Trans*to hasten、 to expedite*はやめる
-暖める,Trans*to warm up、 to heat*あたためる
-染める,Trans*to dye、 to color*そめる
-極める,Trans*to master、 to reach the extreme of*きわめる
-止める,Trans*to stop、 to cease*やめる
-求める,Trans*to seek、 to request*もとめる
-決める,Trans*to decide、 to determine*きめる
-沈める,Trans*to sink、 to submerge*しずめる
-治める,Trans*to govern、 to manage*おさめる
-泊める,Trans*to lodge、 to put up for the night*とめる
-深める,Trans*to deepen、 to heighten*ふかめる
-清める,Trans*to purify、 to cleanse*きよめる
-温める,Trans*to warm up、 to heat*あたためる
-狭める,Trans*to narrow、 to restrict*せばめる
-留める,Trans*to detain、 to stop*とめる
-痛める,Trans*to hurt、 to cause pain*いためる
-眺める,Trans*to view、 to gaze at*ながめる
-矯める,Trans*to correct、 to rectify*ためる
-秘める,Trans*to hide、 to conceal*ひめる
-究める,Trans*to investigate thoroughly、 to master*きわめる
-窮める,Trans*to exhaust、 to reach the limit*きわめる
-納める,Trans*to deliver、 to pay*おさめる
-絞める,Trans*to strangle、 to tighten*しめる
-絡める,Trans*to entangle、 to twist around*からめる
-締める,Trans*to tighten、 to fasten*しめる
-緩める,Trans*to loosen、 to relax*ゆるめる
-縮める,Trans*to shorten、 to reduce*ちぢめる
-薄める,Trans*to dilute、 to thin out*うすめる
-薦める,Trans*to recommend、 to suggest*すすめる
-褒める,Trans*to praise、 to commend*ほめる
-覚める,Intrans*to wake up、 to come to one’s senses*さめる
-詰める,Trans*to pack、 to cram*つめる
-認める,Trans*to recognize、 to acknowledge*みとめる
-諦める,Trans*to give up、 to abandon*あきらめる
-責める,Trans*to blame、 to criticize*せめる
-辞める,Trans*to quit、 to resign*やめる
-辱める,Trans*to humiliate、 to shame*はずかしめる
-込める,Trans*to include、 to load into*こめる
-速める,Trans*to speed up、 to accelerate*はやめる
-進める,Trans*to advance、 to promote*すすめる
-鎮める,Trans*to calm、 to soothe*しずめる
-閉める,Trans*to close、 to shut*しめる
-集める,Trans*to gather、 to collect*あつめる
-静める,Trans*to quiet、 to calm*しずめる
-高める,Trans*to raise、 to heighten*たかめる
+勧める,Transative*to recommend、 to advise*すすめる
+占める,Transative*to constitute、 to comprise*しめる
+収める,Transative*to store、 to keep*おさめる
+含める,Transative*to include、 to contain*ふくめる
+固める,Transative*to harden、 to solidify*かためる
+埋める,Transative*to bury、 to fill in*うめる
+始める,Transative*to begin、 to start*はじめる
+定める,Transative*to decide、 to determine*さだめる
+広める,Transative*to spread、 to widen*ひろめる
+弱める,Transative*to weaken、 to make weaker*よわめる
+強める,Transative*to strengthen、 to make stronger*つよめる
+慰める,Transative*to comfort、 to console*なぐさめる
+戒める,Transative*to admonish、 to warn*いましめる
+改める,Transative*to change、 to reform*あらためる
+攻める,Transative*to attack、 to assault*せめる
+早める,Transative*to hasten、 to expedite*はやめる
+暖める,Transative*to warm up、 to heat*あたためる
+染める,Transative*to dye、 to color*そめる
+極める,Transative*to master、 to reach the extreme of*きわめる
+止める,Transative*to stop、 to cease*やめる
+求める,Transative*to seek、 to request*もとめる
+決める,Transative*to decide、 to determine*きめる
+沈める,Transative*to sink、 to submerge*しずめる
+治める,Transative*to govern、 to manage*おさめる
+泊める,Transative*to lodge、 to put up for the night*とめる
+深める,Transative*to deepen、 to heighten*ふかめる
+清める,Transative*to purify、 to cleanse*きよめる
+温める,Transative*to warm up、 to heat*あたためる
+狭める,Transative*to narrow、 to restrict*せばめる
+留める,Transative*to detain、 to stop*とめる
+痛める,Transative*to hurt、 to cause pain*いためる
+眺める,Transative*to view、 to gaze at*ながめる
+矯める,Transative*to correct、 to rectify*ためる
+秘める,Transative*to hide、 to conceal*ひめる
+究める,Transative*to investigate thoroughly、 to master*きわめる
+窮める,Transative*to exhaust、 to reach the limit*きわめる
+納める,Transative*to deliver、 to pay*おさめる
+絞める,Transative*to strangle、 to tighten*しめる
+絡める,Transative*to entangle、 to twist around*からめる
+締める,Transative*to tighten、 to fasten*しめる
+緩める,Transative*to loosen、 to relax*ゆるめる
+縮める,Transative*to shorten、 to reduce*ちぢめる
+薄める,Transative*to dilute、 to thin out*うすめる
+薦める,Transative*to recommend、 to suggest*すすめる
+褒める,Transative*to praise、 to commend*ほめる
+覚める,Intransative*to wake up、 to come to one’s senses*さめる
+詰める,Transative*to pack、 to cram*つめる
+認める,Transative*to recognize、 to acknowledge*みとめる
+諦める,Transative*to give up、 to abandon*あきらめる
+責める,Transative*to blame、 to criticize*せめる
+辞める,Transative*to quit、 to resign*やめる
+辱める,Transative*to humiliate、 to shame*はずかしめる
+込める,Transative*to include、 to load into*こめる
+速める,Transative*to speed up、 to accelerate*はやめる
+進める,Transative*to advance、 to promote*すすめる
+鎮める,Transative*to calm、 to soothe*しずめる
+閉める,Transative*to close、 to shut*しめる
+集める,Transative*to gather、 to collect*あつめる
+静める,Transative*to quiet、 to calm*しずめる
+高める,Transative*to raise、 to heighten*たかめる
 最も,Adverb*the most*もっとも
 頼もしい,iAdj*reliable、 trustworthy*たのもしい
 積もる,Both*to pile up、 to accumulate*つもる
@@ -977,17 +977,17 @@
 冷やかす,Transative*to tease、 to make fun of*ひやかす
 甘やかす,naAdj*to spoil、 to pamper*あまやかす
 肥やし,Noun*manure、 fertilizer*ひやし
-冷やす,Trans*to cool （something） down、 to chill*ひやす
-増やす,Trans*to increase、 to augment*ふやす
-殖やす,Trans*to multiply、 to increase*ふやす
-煮やす,Trans*to boil （something）*にやす
-燃やす,Trans*to burn、 to set on fire*もやす
-生やす,Trans*to grow、 to cultivate*なやす
-癒やす,Trans*to heal、 to cure*いやす
-絶やす,Trans*to extinguish、 to cut off*たやす
-肥やす,Trans*to fertilize、 to enrich*ひやす
-費やす,Trans*to spend、 to expend*つひやす
-悔やむ,Trans*to regret、 to repent*くやむ
+冷やす,Transative*to cool （something） down、 to chill*ひやす
+増やす,Transative*to increase、 to augment*ふやす
+殖やす,Transative*to multiply、 to increase*ふやす
+煮やす,Transative*to boil （something）*にやす
+燃やす,Transative*to burn、 to set on fire*もやす
+生やす,Transative*to grow、 to cultivate*なやす
+癒やす,Transative*to heal、 to cure*いやす
+絶やす,Transative*to extinguish、 to cut off*たやす
+肥やす,Transative*to fertilize、 to enrich*ひやす
+費やす,Transative*to spend、 to expend*つひやす
+悔やむ,Transative*to regret、 to repent*くやむ
 傍ら,Adverb*beside、 alongside*わきまわり
 専ら,Adverb*solely、 entirely*ときどき
 平ら,naAdj*flat、 level*たいら
