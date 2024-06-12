@@ -49,6 +49,7 @@ func main() {
         "./resources/FullDetailsOnyomi.csv",
         "./resources/KunyomiByEndings.csv",
         "./resources/TranslatorMap.csv",
+        "./resources/KunyomiTransatives.csv",
     }
 
     lenFiles := len(filePaths)
@@ -103,6 +104,9 @@ func main() {
 
                 case "./resources/TranslatorMap.csv":
                     kanjiOps.TranslatorMap = csvMap
+
+                case "./resources/KunyomiTransatives.csv":
+                    kanjiOps.KunyomiTransatives = csvMap
             }
 
         }(filePath)
@@ -249,6 +253,9 @@ func main() {
                 scanner.Scan()
                 userInput = scanner.Text()
 
+                hiraganatranslation := kanjiOps.TranslatorMap[userInput]
+
+
                 if userInput == "clear" {
                     utils.ClearScreen()
                     continue
@@ -259,10 +266,66 @@ func main() {
                     break
                 }
                 
+                transativecount := 0
+                intransativecount := 0
+                endingscount := 0
+                iAdjCount := 0
+                naAdjCount := 0
+                AdverbCount := 0
+                ConjunctionCount := 0
+
                 for _, currentkanji := range(kanjiOps.KunyomiByEndings[userInput]) {
-                    hiraganatranslation := kanjiOps.TranslatorMap[userInput]
                     jointword := url.QueryEscape(string(currentkanji) + string(hiraganatranslation))
-                    fmt.Printf("%s%s\n -> https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), jointword)
+                    jointstring := string(currentkanji) + string(hiraganatranslation)
+                    transatives := kanjiOps.KunyomiTransatives[jointstring]
+                    
+                    parts := strings.Split(string(transatives), "*")
+                    
+                    if len(parts) > 2 {
+                        wordtype := parts[0]
+                        definition := parts[1]
+                        hiraganized := parts[2]
+                        
+
+                        fmt.Printf("%s %s (%s) -> %s |%s| https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), hiraganized, wordtype, definition, jointword)
+
+                        if wordtype == "Transative" {
+                            transativecount++
+                        } else if wordtype == "Intransative" {
+                            intransativecount++
+                        } else if wordtype == "Ending" {
+                            endingscount++
+                        } else if wordtype == "iAdj" {
+                            iAdjCount++
+                        } else if wordtype == "naAdj" {
+                            naAdjCount++
+                        } else if wordtype == "Adverb" {
+                            AdverbCount++
+                        } else if wordtype == "Conjunction" {
+                            ConjunctionCount++
+                        }
+                    }
+                }
+
+                fmt.Printf("\nNumber of occurences [%s]: %s -> %s\n", userInput, endingscount)
+                
+                if transativecount > 0 {
+                    fmt.Println("Total Transatives: ", transativecount)
+                } 
+				if intransativecount > 0 {
+                    fmt.Println("Total Intransatives: ", intransativecount)
+                } 
+				if iAdjCount > 0 {
+                    fmt.Println("Total iAdj: ", iAdjCount)
+                } 
+				if naAdjCount > 0 {
+                    fmt.Println("Total naAdj: ", naAdjCount)
+                } 
+				if AdverbCount > 0 {
+                    fmt.Println("Total Adverbs: ", AdverbCount)
+                } 
+				if ConjunctionCount > 0 {
+                    fmt.Println("Total Conjunctions: ", ConjunctionCount)
                 }
 
             } else {
