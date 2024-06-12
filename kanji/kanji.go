@@ -10,6 +10,7 @@ import (
 )
 
 
+
 // Please look into possibly using channels -> still need to learn how to do this, maybe a mutex alternative
 type KanjiReadings struct {
     OnyomiMap map[string][]rune
@@ -28,6 +29,8 @@ type KanjiReadings struct {
     Kunyomifrequencyslice [][]string
     Kunyomiwithhiraganafrequencyslice [][]string
 
+    VerbFilter string
+
     ShowReadings bool
 
     strings.Builder
@@ -36,9 +39,13 @@ type KanjiReadings struct {
     mu sync.Mutex
 }
 
+
+
 func (kr *KanjiReadings) Lock() {
     kr.mu.Lock()
 }
+
+
 
 func (kr *KanjiReadings) Unlock() {
     kr.mu.Unlock()
