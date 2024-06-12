@@ -15,6 +15,7 @@ type PatternCleaning struct {
     CaptureRomanCharacters *regexp.Regexp
     CaptureNonKanji *regexp.Regexp
     CaptureNonNumbers *regexp.Regexp
+    CaptureVerbFlags *regexp.Regexp
 }
 
 var (
@@ -32,6 +33,7 @@ func NewPatternCleaning() *PatternCleaning {
             CaptureRomanCharacters: regexp.MustCompile(`[A-Za-z]`),
             CaptureNonKanji: regexp.MustCompile(`[^\p{Han}]`),
             CaptureNonNumbers: regexp.MustCompile(`[^\d]`),
+            CaptureVerbFlags: regexp.MustCompile(`^(transative|intransative|disabled|naadj|iadj|noun|conjunction)$`),
         }
     })
     return pc
@@ -56,6 +58,10 @@ func (pc *PatternCleaning) IsCaptureRomanCharacters(key string) bool {
 
 func (pc *PatternCleaning) IsIllegalCharactersPattern(key string) bool {
     return pc.IllegalCharacters.MatchString(key)
+}
+
+func (pc *PatternCleaning) IsVerbFlagsPattern(key string) bool {
+    return pc.CaptureVerbFlags.MatchString(key)
 }
 
 func (pc *PatternCleaning) IsEnglishPattern(key string) bool {
