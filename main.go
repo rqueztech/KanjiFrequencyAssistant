@@ -20,6 +20,49 @@ type Builder struct {
     strings.Builder
 }
 
+const (
+    reset = iota
+    transative = 1 << iota
+    intransative
+    naadj
+    iadj
+    noun
+    conjunction
+    adverb
+)
+
+type FlagManager struct {
+    flags int
+}
+
+func (fm *FlagManager) SetFlag(flagname string) error {
+    switch flagname {
+        case "reset":
+            fm.flags = reset
+        case "transative":
+            fm.flags ^= transative
+        case "intransative":
+            fm.flags ^= intransative
+        case "naadj":
+            fm.flags ^= naadj
+        case "iadj":
+            fm.flags ^= iadj
+        case "noun":
+            fm.flags ^= noun
+        case "conjunction":
+            fm.flags ^= conjunction
+        case "adverb":
+            fm.flags ^= adverb
+        default:
+            return fmt.Errorf("Invalid flag name")
+    }
+    return nil
+}
+
+func (fm *FlagManager) GetFlag() int {
+    return fm.flags
+}
+
 // Main function
 func main() {
 
@@ -28,6 +71,8 @@ func main() {
     keigoOps := &keigo.KeigoReadings{
         AlreadyRead: false,
     }
+
+    fm := FlagManager{}
 
     // Create a scanner used to read user input/options
     scanner := bufio.NewScanner(os.Stdin)
@@ -244,17 +289,23 @@ func main() {
                     }
                 }
 
-
                 userInput = "exit"
             } else if applicationSelector == "8" {
+
                 utils.ClearScreen()
 
                 fmt.Println("Enter Kunyomi Word Ending Here: ")
                 scanner.Scan()
                 userInput = scanner.Text()
+                
 
                 hiraganatranslation := kanjiOps.TranslatorMap[userInput]
 
+                if utils.GetPatternCleaning().IsVerbFlagsPattern(userInput) {
+                    fm.SetFlag("reset")
+                    fm.SetFlag(userInput)
+                    fmt.Println("Flag On: ", fm.GetFlag())
+                }
 
                 if userInput == "clear" {
                     utils.ClearScreen()
@@ -265,14 +316,29 @@ func main() {
                     userInput = "exit"
                     break
                 }
-                
-                transativecount := 0
-                intransativecount := 0
+
+                typecounts := map[string]int {
+                    "Transative Count: ": 0,
+                    "Intransative Count: ": 0,
+                    "Endings Count: ": 0,
+                    "iAdj Count: ": 0,
+                    "naAdj Count: ": 0,
+                    "Adverb Count: ": 0,
+                    "Conjunction Count: ": 0,
+                }
+
+                var flagNames = map[int]string{
+                    reset:      "reset",
+                    transative:   "transative",
+                    intransative: "intransative",
+                    naadj:        "naadj",
+                    iadj:         "iadj",
+                    noun:         "noun",
+                    conjunction:  "conjunction",
+                    adverb:       "adverb",
+                }
+
                 endingscount := 0
-                iAdjCount := 0
-                naAdjCount := 0
-                AdverbCount := 0
-                ConjunctionCount := 0
 
                 for _, currentkanji := range(kanjiOps.KunyomiByEndings[userInput]) {
                     jointword := url.QueryEscape(string(currentkanji) + string(hiraganatranslation))
@@ -287,45 +353,25 @@ func main() {
                         hiraganized := parts[2]
                         
 
-                        fmt.Printf("%s %s (%s) -> %s |%s| https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), hiraganized, wordtype, definition, jointword)
+                        if flagNames[fm.GetFlag()] == "reset" {
+                            fmt.Printf("%s %s (%s) -> %s |%s| https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), hiraganized, wordtype, definition, jointword)
+                        } else {
 
-                        if wordtype == "Transative" {
-                            transativecount++
-                        } else if wordtype == "Intransative" {
-                            intransativecount++
-                        } else if wordtype == "Ending" {
-                            endingscount++
-                        } else if wordtype == "iAdj" {
-                            iAdjCount++
-                        } else if wordtype == "naAdj" {
-                            naAdjCount++
-                        } else if wordtype == "Adverb" {
-                            AdverbCount++
-                        } else if wordtype == "Conjunction" {
-                            ConjunctionCount++
+                            if flagNames[fm.GetFlag()] == wordtype {
+                                fmt.Printf("%s %s (%s) -> %s |%s| https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), hiraganized, wordtype, definition, jointword)
+                            }
                         }
+
+                        typecounts[wordtype]++
                     }
-                }
+                } 
 
                 fmt.Printf("\nNumber of occurences [%s]: %s -> %s\n", userInput, endingscount)
                 
-                if transativecount > 0 {
-                    fmt.Println("Total Transatives: ", transativecount)
-                } 
-				if intransativecount > 0 {
-                    fmt.Println("Total Intransatives: ", intransativecount)
-                } 
-				if iAdjCount > 0 {
-                    fmt.Println("Total iAdj: ", iAdjCount)
-                } 
-				if naAdjCount > 0 {
-                    fmt.Println("Total naAdj: ", naAdjCount)
-                } 
-				if AdverbCount > 0 {
-                    fmt.Println("Total Adverbs: ", AdverbCount)
-                } 
-				if ConjunctionCount > 0 {
-                    fmt.Println("Total Conjunctions: ", ConjunctionCount)
+                for key, value := range(typecounts) {
+                    if typecounts[key] > 0 {
+                        fmt.Printf("%s %s\n", key, value)
+                    }
                 }
 
             } else {
