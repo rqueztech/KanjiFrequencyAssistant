@@ -72,6 +72,8 @@ func main() {
         AlreadyRead: false,
     }
 
+    originalflag := "reset"
+
     fm := FlagManager{}
 
     // Create a scanner used to read user input/options
@@ -291,20 +293,31 @@ func main() {
 
                 userInput = "exit"
             } else if applicationSelector == "8" {
-
                 utils.ClearScreen()
 
+                var flagNames = map[int]string{
+                    reset:      "reset",
+                    transative:   "transative",
+                    intransative: "intransative",
+                    naadj:        "naadj",
+                    iadj:         "iadj",
+                    noun:         "noun",
+                    conjunction:  "conjunction",
+                    adverb:       "adverb",
+                }
+
                 fmt.Println("Enter Kunyomi Word Ending Here: ")
+                fmt.Println(originalflag)
                 scanner.Scan()
                 userInput = scanner.Text()
                 
-
                 hiraganatranslation := kanjiOps.TranslatorMap[userInput]
 
                 if utils.GetPatternCleaning().IsVerbFlagsPattern(userInput) {
                     fm.SetFlag("reset")
                     fm.SetFlag(userInput)
                     fmt.Println("Flag On: ", fm.GetFlag())
+                    originalflag = flagNames[fm.GetFlag()]
                 }
 
                 if userInput == "clear" {
@@ -327,16 +340,7 @@ func main() {
                     "Conjunction Count: ": 0,
                 }
 
-                var flagNames = map[int]string{
-                    reset:      "reset",
-                    transative:   "transative",
-                    intransative: "intransative",
-                    naadj:        "naadj",
-                    iadj:         "iadj",
-                    noun:         "noun",
-                    conjunction:  "conjunction",
-                    adverb:       "adverb",
-                }
+
 
                 endingscount := 0
 
@@ -358,6 +362,7 @@ func main() {
                         } else {
 
                             if flagNames[fm.GetFlag()] == wordtype {
+                                originalflag = wordtype
                                 fmt.Printf("%s %s (%s) -> %s |%s| https://www.jisho.org/search/%s\n", string(currentkanji), string(hiraganatranslation), hiraganized, wordtype, definition, jointword)
                             }
                         }
