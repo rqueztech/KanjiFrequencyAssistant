@@ -29,8 +29,6 @@ type KanjiReadings struct {
     Kunyomifrequencyslice [][]string
     Kunyomiwithhiraganafrequencyslice [][]string
 
-    VerbFilter string
-
     ShowReadings bool
 
     strings.Builder
