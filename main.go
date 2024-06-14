@@ -89,7 +89,7 @@ func main() {
         "./resources/KanjiFrequencyListKunyomi.csv",
         "./resources/KunyomiWithHiragana.csv",
         "./resources/KanjiMeanings.csv",
-        "./resources/all_Readings_string.csv",
+        "./resources/all_readings_string.csv",
         "./resources/keigo_mapper.csv",
         "./resources/KunyomiByEndings.csv",
         "./resources/TranslatorMap.csv",
