@@ -152,10 +152,6 @@ func main() {
 
     kanjiOps.LoadFrequencies()
 
-    scanner.Scan()
-    userInput := scanner.Text()
-    fmt.Println(userInput)
-
     // Loop to keep the program running unless the user types in "exit"
     for {
         utils.ClearScreen() 
