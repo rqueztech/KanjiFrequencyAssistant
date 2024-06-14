@@ -85,15 +85,15 @@ func main() {
 
     // Create  string array of filepaths, this will help us save into proper map
     filePaths := []string {
-        "./resources/KanjiFrequencyListOnyomi.csv",
-        "./resources/KanjiFrequencyListKunyomi.csv",
-        "./resources/KunyomiWithHiragana.csv",
-        "./resources/KanjiMeanings.csv",
+        "./resources/kanji_frequency_list_onyomi.csv",
+        "./resources/kanji_frequency_list_kunyomi.csv",
+        "./resources/kunyomi_with_hiragana.csv",
+        "./resources/kanji_meanings.csv",
         "./resources/all_readings_string.csv",
         "./resources/keigo_mapper.csv",
-        "./resources/KunyomiByEndings.csv",
-        "./resources/TranslatorMap.csv",
-        "./resources/KunyomiTransatives.csv",
+        "./resources/kunyomi_by_endings.csv",
+        "./resources/translator_map.csv",
+        "./resources/kunyomi_transatives.csv",
     }
 
     lenFiles := len(filePaths)
@@ -115,16 +115,16 @@ func main() {
 
             // Create switch statement for importing all csv files
             switch filePath {
-                case "./resources/KanjiFrequencyListOnyomi.csv":
+                case "./resources/kanji_frequency_list_onyomi.csv":
                     kanjiOps.OnyomiMap = csvMap
 
-                case "./resources/KanjiFrequencyListKunyomi.csv": 
+                case "./resources/kanji_frequency_list_kunyomi.csv": 
                     kanjiOps.KunyomiMap = csvMap
 
-                case "./resources/KunyomiWithHiragana.csv":
+                case "./resources/kunyomi_with_hiragana.csv":
                     kanjiOps.KunyomiWithHiragana = csvMap
 
-                case "./resources/KanjiMeanings.csv":
+                case "./resources/kanji_meanings.csv":
                     kanjiOps.KanjiMeanings = csvMap
 
                 case "./resources/all_readings_string.csv":
@@ -134,13 +134,13 @@ func main() {
                 case "./resources/keigo_mapper.csv":
                     keigoOps.KeigoMap = csvMap
 
-                case "./resources/KunyomiByEndings.csv":
+                case "./resources/kunyomi_by_endings.csv":
                     kanjiOps.KunyomiByEndings = csvMap
 
-                case "./resources/TranslatorMap.csv":
+                case "./resources/translator_map.csv":
                     kanjiOps.TranslatorMap = csvMap
 
-                case "./resources/KunyomiTransatives.csv":
+                case "./resources/kunyomi_transatives.csv":
                     kanjiOps.KunyomiTransatives = csvMap
             }
 
@@ -151,6 +151,10 @@ func main() {
     wg.Wait()
 
     kanjiOps.LoadFrequencies()
+
+    scanner.Scan()
+    userInput := scanner.Text()
+    fmt.Println(userInput)
 
     // Loop to keep the program running unless the user types in "exit"
     for {
