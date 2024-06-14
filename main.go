@@ -91,9 +91,6 @@ func main() {
         "./resources/KanjiMeanings.csv",
         "./resources/all_Readings_string.csv",
         "./resources/keigo_mapper.csv",
-        "./resources/FullDetailsBoth.csv",
-        "./resources/FullDetailsKunyomi.csv",
-        "./resources/FullDetailsOnyomi.csv",
         "./resources/KunyomiByEndings.csv",
         "./resources/TranslatorMap.csv",
         "./resources/KunyomiTransatives.csv",
@@ -137,15 +134,6 @@ func main() {
                 case "./resources/keigo_mapper.csv":
                     keigoOps.KeigoMap = csvMap
 
-                case "./resources/FullDetailsBoth.csv":
-					kanjiOps.FullDetailsBoth = csvMap
-
-                case "./resources/FullDetailsKunyomi.csv":
-					kanjiOps.FullDetailsBoth = csvMap
-
-                case "./resources/FullDetailsOnyomi.csv":
-					kanjiOps.FullDetailsBoth = csvMap
-
                 case "./resources/KunyomiByEndings.csv":
                     kanjiOps.KunyomiByEndings = csvMap
 
@@ -163,8 +151,6 @@ func main() {
     wg.Wait()
 
     kanjiOps.LoadFrequencies()
-
-    // now back in sequential mode, we can 
 
     // Loop to keep the program running unless the user types in "exit"
     for {

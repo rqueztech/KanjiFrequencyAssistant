@@ -14,6 +14,7 @@ func ReadCSV(resourcesFile string) (map[string][]rune, error) {
     // Open the file
     file, err := os.Open(resourcesFile)
     if err != nil {
+        fmt.Println(resourcesFile)
         return nil, fmt.Errorf("File not found: %w", err)
     }
 
