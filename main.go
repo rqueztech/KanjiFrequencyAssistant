@@ -127,7 +127,7 @@ func main() {
                 case "./resources/KanjiMeanings.csv":
                     kanjiOps.KanjiMeanings = csvMap
 
-                case "./resources/all_Readings_string.csv":
+                case "./resources/all_readings_string.csv":
                     // setting the csvmap directly into the kanj.KanjiReadings map
                     kanjiOps.Readings = csvMap
 
