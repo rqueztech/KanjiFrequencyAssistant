@@ -4,6 +4,7 @@ import (
     "encoding/csv"
     "fmt"
     "os"
+    "unicode/utf8"
 )
 
 func ReadCSV(resourcesFile string) (map[string][]rune, error) {
@@ -12,11 +13,8 @@ func ReadCSV(resourcesFile string) (map[string][]rune, error) {
 
     // Open the file
     file, err := os.Open(resourcesFile)
-
-    // Error handling
     if err != nil {
-        fmt.Println("File not found...")
-        return nil, err
+        return nil, fmt.Errorf("File not found: %w", err)
     }
 
     // Close the file at the end of the function
@@ -27,8 +25,6 @@ func ReadCSV(resourcesFile string) (map[string][]rune, error) {
 
     // Read in all of the records -> returns as [][]string
     records, err := reader.ReadAll()
-
-    // Error handling
     if err != nil {
         fmt.Println(err)
         return nil, err
@@ -36,6 +32,10 @@ func ReadCSV(resourcesFile string) (map[string][]rune, error) {
 
     // Append each record to lines
     for _, line := range(records) {
+        if !utf8.ValidString(line[0]) || !utf8.ValidString(line[1]) {
+            fmt.Println("Invalid UTF-8")
+        }
+
         mymap[line[0]] = []rune(line[1])
     }
 
