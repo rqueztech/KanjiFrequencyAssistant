@@ -246,17 +246,19 @@ func main() {
                     fmt.Println(slicedreadings[1])
 
                     if slicedreadings[1] == "Both" {
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
                         fmt.Println(slicedreadings[2])
-                        fmt.Println(slicedreadings[4])
+                        fmt.Println(slicedreadings[4]) 
                     } else if slicedreadings[1] == "Kunyomi" {
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
                         fmt.Println("NUMBER OF READINGS")
                         fmt.Println(slicedreadings[4])
                     } else if slicedreadings[1] == "Onyomi" {
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
                         fmt.Println("NUMBER OF READIGNS")
                         fmt.Println(slicedreadings[4])
                     }
 
-                    fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
                 }
             } else if applicationSelector == "7" {
                 fmt.Println("Enter Kanji Here: ")
@@ -268,12 +270,55 @@ func main() {
                     userInput = scanner.Text()
                     _ = scanner.Text()
 
-                    if utils.GetPatternCleaning().IsRomajiPattern(userInput) {
-                        fmt.Println("Please Enter Japense Characters")
-                    } else {
-                        QueryEscaped := url.QueryEscape(userInput)
+                    if userInput == "clear" {
+                        utils.ClearScreen()
+                    }
 
-                        fmt.Printf("%s -> Link: https://www.jisho.org/search/%s\n",  userInput, QueryEscaped)
+                    userInput = utils.GetPatternCleaning().RemoveNonKanji(userInput)
+
+                    seen := make(map[rune]bool)
+                    unique := []rune{}
+
+                    for _, char := range(userInput) {
+                        if _, ok := seen[char]; !ok {
+                            seen[char] = true
+                            unique = append(unique, char)
+                        }
+                    }
+                    
+                    for _, currentkanji := range string(unique) {
+                        kanjiMeanings := kanjiOps.KanjiMeanings[string(currentkanji)]
+                        kanjiReadings := kanjiOps.Readings[string(currentkanji)]
+                        kanjiStrings := string(kanjiMeanings)
+                        kanjireadingssplit:= strings.Split(string(kanjiReadings), "*")
+
+                        onyomiReadings := ""
+                        kunyomiReadings := ""
+
+                        fmt.Println("-----------------------------------")
+                        switch kanjireadingssplit[0] {
+                        case "Both":
+                            onyomiReadings = kanjireadingssplit[2]
+                            kunyomiReadings = kanjireadingssplit[4]
+                            fmt.Println(kanjireadingssplit[1])
+                            fmt.Println(kanjireadingssplit[3])
+                            fmt.Println("Onyomi: ", onyomiReadings)
+                            fmt.Println("Kunyomi: ", kunyomiReadings)
+                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
+                        case "Kunyomi":
+                            kunyomiReadings := kanjireadingssplit[2]
+                            fmt.Println(kanjireadingssplit[1])
+                            fmt.Println("Kunyomi: ", kunyomiReadings)
+                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
+                        case "Onyomi":
+                            onyomiReadings := kanjireadingssplit[2]
+                            fmt.Println(kanjireadingssplit[1])
+                            fmt.Println("Onyomi: ", onyomiReadings)
+                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
+                        default:
+                            fmt.Println("Default")
+                        }
+
                     }
                 }
 
