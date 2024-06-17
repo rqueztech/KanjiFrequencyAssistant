@@ -236,8 +236,8 @@ func main() {
                 }
 
                 for _, char := range removeduplicates {
-                    currentKanji := string(char)
-                    QueryEscaped := url.QueryEscape(currentKanji)
+                    currentkanji := string(char)
+                    QueryEscaped := url.QueryEscape(currentkanji)
                     kanjiDefinition := string(kanjiOps.KanjiMeanings[string(char)])
 
                     numReadings := string(kanjiOps.Readings[string(char)])
@@ -246,15 +246,15 @@ func main() {
                     fmt.Println(slicedreadings[1])
 
                     if slicedreadings[1] == "Both" {
-                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentkanji, kanjiDefinition, QueryEscaped)
                         fmt.Println(slicedreadings[2])
                         fmt.Println(slicedreadings[4]) 
                     } else if slicedreadings[1] == "Kunyomi" {
-                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentkanji, kanjiDefinition, QueryEscaped)
                         fmt.Println("NUMBER OF READINGS")
                         fmt.Println(slicedreadings[4])
                     } else if slicedreadings[1] == "Onyomi" {
-                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentKanji, kanjiDefinition, QueryEscaped)
+                        fmt.Printf("%s -> \t%s : \nLink: https://www.jisho.org/search/%s%20%23kanji", currentkanji, kanjiDefinition, QueryEscaped)
                         fmt.Println("NUMBER OF READIGNS")
                         fmt.Println(slicedreadings[4])
                     }
@@ -298,19 +298,57 @@ func main() {
                         fmt.Println("-----------------------------------")
                         switch kanjireadingssplit[0] {
                         case "Both":
+                            kunyomiwords := strings.Split(string(kanjireadingssplit[3]), "、")
+
+                            for _, word := range kunyomiwords {
+                                wordsplit := strings.Split(word, "－")
+
+                                counter := 1
+                                if len(wordsplit) > 1 {
+                                    kanjiword := string(currentkanji) + wordsplit[1]
+                                    transativity := kanjiOps.KunyomiTransatives[string(kanjiword)]
+                                    transativitysplit := strings.Split(string(transativity), "*")
+
+                                    if len(wordsplit) > 1 && len(transativitysplit) > 1 {
+                                        fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")\n", string(transativitysplit[0]))
+                                    } else if (counter %3 == 0) {
+                                        fmt.Println("")
+                                    }
+
+                                    counter += 1
+                                }
+                            }
+
+                            fmt.Println("")
+
                             onyomiReadings = kanjireadingssplit[2]
                             kunyomiReadings = kanjireadingssplit[4]
-                            fmt.Println(kanjireadingssplit[1])
-                            fmt.Println(kanjireadingssplit[3])
                             fmt.Println("Onyomi: ", onyomiReadings)
                             fmt.Println("Kunyomi: ", kunyomiReadings)
-                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
+                            fmt.Printf("%s (%s) -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjireadingssplit[1], kanjiStrings, url.QueryEscape(userInput))
                         case "Kunyomi":
+                            kunyomiwords := strings.Split(string(kanjireadingssplit[1]), "、")
+
+                            for _, word := range kunyomiwords {
+                                wordsplit := strings.Split(word, "－")
+
+                                kanjiword := string(currentkanji) + wordsplit[1]
+                                transativity := kanjiOps.KunyomiTransatives[string(kanjiword)]
+                                transativitysplit := strings.Split(string(transativity), "*")
+
+                                if len(wordsplit) > 1{
+                                    fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")", " :: ", string(transativitysplit[0]))
+                                }
+
+                            }
+
                             kunyomiReadings := kanjireadingssplit[2]
                             fmt.Println(kanjireadingssplit[1])
                             fmt.Println("Kunyomi: ", kunyomiReadings)
                             fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
                         case "Onyomi":
+
+
                             onyomiReadings := kanjireadingssplit[2]
                             fmt.Println(kanjireadingssplit[1])
                             fmt.Println("Onyomi: ", onyomiReadings)
