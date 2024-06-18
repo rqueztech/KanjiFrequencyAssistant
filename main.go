@@ -94,6 +94,7 @@ func main() {
         "./resources/kunyomi_by_endings.csv",
         "./resources/translator_map.csv",
         "./resources/kunyomi_transatives.csv",
+        "./resources/particleset.csv",
     }
 
     lenFiles := len(filePaths)
@@ -142,6 +143,9 @@ func main() {
 
                 case "./resources/kunyomi_transatives.csv":
                     kanjiOps.KunyomiTransatives = csvMap
+                
+                case "./resources/particleset.csv":
+                    kanjiOps.ParticleSet = csvMap
             }
 
         }(filePath)
@@ -155,7 +159,7 @@ func main() {
     // Loop to keep the program running unless the user types in "exit"
     for {
         utils.ClearScreen() 
-        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Enter Phrase to link \n8. KunyomiByEndings\nEnter Input: ")
+        fmt.Print("Select Function:\n1. Kanji Finder\n2. Keigo Finder\n3. Onyomi\n4. Kunyomi\n5. KunyomiWithHiragana\n6. Kanji Only\n7. Enter Phrase to link \n8. KunyomiByEndings\n9. Expressions\nEnter Input: ")
 
         scanner.Scan()
         applicationSelector := scanner.Text()
@@ -225,8 +229,15 @@ func main() {
                 charMap := make(map[rune]bool)
 
                 userInput = utils.GetPatternCleaning().RemoveNonKanji(userInput)
+                userInputFilter := ""
 
-                for _, char := range userInput {
+                for _, kanjitoclean := range userInput {
+                    if kanjiOps.KanjiMeanings[string(kanjitoclean)] != nil {
+                        userInputFilter += string(kanjitoclean)
+                    }
+                }
+
+                for _, char := range userInputFilter {
                     charMap[char] = true
                 }
 
@@ -287,76 +298,75 @@ func main() {
                     }
                     
                     for _, currentkanji := range string(unique) {
-                        kanjiMeanings := kanjiOps.KanjiMeanings[string(currentkanji)]
-                        kanjiReadings := kanjiOps.Readings[string(currentkanji)]
-                        kanjiStrings := string(kanjiMeanings)
-                        kanjireadingssplit:= strings.Split(string(kanjiReadings), "*")
+                        if kanjiOps.KanjiMeanings[string(currentkanji)] != nil {
 
-                        onyomiReadings := ""
-                        kunyomiReadings := ""
+                            kanjiMeanings := kanjiOps.KanjiMeanings[string(currentkanji)]
+                            kanjiReadings := kanjiOps.Readings[string(currentkanji)]
+                            kanjiStrings := string(kanjiMeanings)
+                            kanjireadingssplit:= strings.Split(string(kanjiReadings), "*")
 
-                        fmt.Println("-----------------------------------")
-                        switch kanjireadingssplit[0] {
-                        case "Both":
-                            kunyomiwords := strings.Split(string(kanjireadingssplit[3]), "、")
+                            onyomiReadings := ""
+                            kunyomiReadings := ""
 
-                            for _, word := range kunyomiwords {
-                                wordsplit := strings.Split(word, "－")
+                            fmt.Println("-----------------------------------")
+                            switch kanjireadingssplit[0] {
+                            case "Both":
+                                kunyomiwords := strings.Split(string(kanjireadingssplit[3]), "、")
 
-                                counter := 1
-                                if len(wordsplit) > 1 {
+                                for _, word := range kunyomiwords {
+                                    wordsplit := strings.Split(word, "－")
+
+                                    counter := 1
+                                    if len(wordsplit) > 1 {
+                                        kanjiword := string(currentkanji) + wordsplit[1]
+                                        transativity := kanjiOps.KunyomiTransatives[string(kanjiword)]
+                                        transativitysplit := strings.Split(string(transativity), "*")
+
+                                        if len(wordsplit) > 1 && len(transativitysplit) > 1 {
+                                            fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")\n", string(transativitysplit[0]))
+                                        } else if (counter %3 == 0) {
+                                            fmt.Println("")
+                                        }
+
+                                        counter += 1
+                                    }
+                                }
+
+                                fmt.Println("")
+
+                                onyomiReadings = kanjireadingssplit[2]
+                                kunyomiReadings = kanjireadingssplit[4]
+                                fmt.Println("Onyomi: ", onyomiReadings)
+                                fmt.Println("Kunyomi: ", kunyomiReadings)
+                                fmt.Printf("%s (%s) -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjireadingssplit[1], kanjiStrings, url.QueryEscape(userInput))
+                            case "Kunyomi":
+                                kunyomiwords := strings.Split(string(kanjireadingssplit[1]), "、")
+
+                                for _, word := range kunyomiwords {
+                                    wordsplit := strings.Split(word, "－")
+
                                     kanjiword := string(currentkanji) + wordsplit[1]
                                     transativity := kanjiOps.KunyomiTransatives[string(kanjiword)]
                                     transativitysplit := strings.Split(string(transativity), "*")
 
-                                    if len(wordsplit) > 1 && len(transativitysplit) > 1 {
-                                        fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")\n", string(transativitysplit[0]))
-                                    } else if (counter %3 == 0) {
-                                        fmt.Println("")
+                                    if len(wordsplit) > 1{
+                                        fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")", " :: ", string(transativitysplit[0]))
                                     }
 
-                                    counter += 1
-                                }
-                            }
-
-                            fmt.Println("")
-
-                            onyomiReadings = kanjireadingssplit[2]
-                            kunyomiReadings = kanjireadingssplit[4]
-                            fmt.Println("Onyomi: ", onyomiReadings)
-                            fmt.Println("Kunyomi: ", kunyomiReadings)
-                            fmt.Printf("%s (%s) -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjireadingssplit[1], kanjiStrings, url.QueryEscape(userInput))
-                        case "Kunyomi":
-                            kunyomiwords := strings.Split(string(kanjireadingssplit[1]), "、")
-
-                            for _, word := range kunyomiwords {
-                                wordsplit := strings.Split(word, "－")
-
-                                kanjiword := string(currentkanji) + wordsplit[1]
-                                transativity := kanjiOps.KunyomiTransatives[string(kanjiword)]
-                                transativitysplit := strings.Split(string(transativity), "*")
-
-                                if len(wordsplit) > 1{
-                                    fmt.Print(kanjiword, "(", wordsplit[0], wordsplit[1], ")", " :: ", string(transativitysplit[0]))
                                 }
 
+                                kunyomiReadings := kanjireadingssplit[2]
+                                fmt.Println(kanjireadingssplit[1])
+                                fmt.Println("Kunyomi: ", kunyomiReadings)
+                                fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
+                            case "Onyomi":
+                                onyomiReadings := kanjireadingssplit[2]
+                                fmt.Println("Onyomi: ", onyomiReadings)
+                                fmt.Printf("%s(%s) -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjireadingssplit[1], kanjiStrings, url.QueryEscape(userInput))
+                            default:
+                                fmt.Println("Default")
                             }
-
-                            kunyomiReadings := kanjireadingssplit[2]
-                            fmt.Println(kanjireadingssplit[1])
-                            fmt.Println("Kunyomi: ", kunyomiReadings)
-                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
-                        case "Onyomi":
-
-
-                            onyomiReadings := kanjireadingssplit[2]
-                            fmt.Println(kanjireadingssplit[1])
-                            fmt.Println("Onyomi: ", onyomiReadings)
-                            fmt.Printf("%s -> %s -> \nLink: https://www.jisho.org/search/%s\n", string(currentkanji), kanjiStrings, url.QueryEscape(userInput))
-                        default:
-                            fmt.Println("Default")
                         }
-
                     }
                 }
 
@@ -447,7 +457,66 @@ func main() {
                         fmt.Printf("%s %s\n", key, value)
                     }
                 }
+            } else if applicationSelector == "9" {
+                utils.ClearScreen()
 
+                fmt.Print("Enter Particle: ")
+                
+                scanner.Scan()
+                userInput := scanner.Text()
+
+                particleresult, exists := kanjiOps.ParticleSet[userInput]
+                if !exists {
+                    fmt.Println("Particle not found")
+                } else {
+                    suffix := "*" + string(particleresult) + " #conj"
+                    prefix := string(particleresult) + "* #conj"
+
+                    // Escape the result
+                    suffixResult := url.QueryEscape(suffix)
+                    prefixResult := url.QueryEscape(prefix)
+
+                    // Construct the full URLs with manually escaped asterisk
+                    url1 := "Suffix: https://www.jisho.org/search/" + suffixResult
+                    url2 := "Prefix: https://www.jisho.org/search/" + prefixResult
+
+                    url1 = strings.ReplaceAll(url1, "+", "%20")
+                    url2 = strings.ReplaceAll(url2, "+", "%20")
+
+                    fmt.Println(url1)
+                    fmt.Println(url2)
+
+                    commonsuffix := "*" + string(particleresult) + " #exp"
+                    commonprefix := string(particleresult) + "* #exp"
+
+                    commonSuffixResult := url.QueryEscape(commonsuffix)
+                    commonPrefixResult := url.QueryEscape(commonprefix)
+
+                    commonUrl1 := "Suffix: https://www.jisho.org/search/" + commonSuffixResult
+                    commonUrl2 := "Prefix: https://www.jisho.org/search/" + commonPrefixResult
+
+                    commonUrl1 = strings.ReplaceAll(commonUrl1, "+", "%20")
+                    commonUrl2 = strings.ReplaceAll(commonUrl2, "+", "%20")
+
+
+                    fmt.Println(commonUrl1)
+                    fmt.Println(commonUrl2)
+
+
+                    particlesuffix := "*" + string(particleresult) + "*" + " #particle"
+
+                    particleSuffixResult := url.QueryEscape(particlesuffix)
+
+                    particleUrl1 := "Particle: https://www.jisho.org/search/" + particleSuffixResult
+
+                    particleUrl1 = strings.ReplaceAll(particleUrl1, "+", "%20")
+
+                    fmt.Println(particleUrl1)
+                }
+
+                
+                
+                userInput = "exit"
             } else {
                 utils.ClearScreen()
                 fmt.Println("Enter valid input")
