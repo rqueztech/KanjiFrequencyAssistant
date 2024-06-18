@@ -24,6 +24,7 @@ type KanjiReadings struct {
     KunyomiByEndings map[string][]rune
     TranslatorMap map[string][]rune
     KunyomiTransatives map[string][]rune
+    ParticleSet map[string][]rune
 
     Onyomifrequencyslice  [][]string
     Kunyomifrequencyslice [][]string
